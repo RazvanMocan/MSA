@@ -1,5 +1,6 @@
 package com.mocan.autoreflex.ui.login
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,10 @@ import com.mocan.autoreflex.data.LoginRepository
 import com.mocan.autoreflex.data.Result
 
 import com.mocan.autoreflex.R
+import androidx.core.content.ContextCompat.startActivity
+import android.content.Intent
+import com.mocan.autoreflex.MainMenu
+
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -24,6 +29,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         if (result is Result.Success) {
             _loginResult.value =
                 LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+
+
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }

@@ -1,6 +1,7 @@
 package com.mocan.autoreflex.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -14,6 +15,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.mocan.autoreflex.MainMenu
 
 import com.mocan.autoreflex.R
 
@@ -100,7 +103,10 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
+
+        val myIntent = Intent(this, MainMenu::class.java)
+        startActivity(myIntent)
+
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",
