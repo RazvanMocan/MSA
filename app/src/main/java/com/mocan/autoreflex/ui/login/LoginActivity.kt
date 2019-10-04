@@ -11,14 +11,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.mocan.autoreflex.MainMenu
 
 import com.mocan.autoreflex.R
+import com.mocan.autoreflex.SignUp
 
 class LoginActivity : AppCompatActivity() {
 
@@ -33,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+        val signUp = findViewById<TextView>(R.id.textView2)
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -97,6 +96,12 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+        }
+        signUp.setOnClickListener {
+            val myIntent = Intent(this, SignUp::class.java)
+            startActivity(myIntent)
+
+            finish()
         }
     }
 
