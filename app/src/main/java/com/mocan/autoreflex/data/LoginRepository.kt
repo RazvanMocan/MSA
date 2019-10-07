@@ -1,6 +1,8 @@
 package com.mocan.autoreflex.data
 
-import com.mocan.autoreflex.data.model.LoggedInUser
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseUser
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -9,8 +11,8 @@ import com.mocan.autoreflex.data.model.LoggedInUser
 
 class LoginRepository(val dataSource: LoginDataSource) {
 
-    // in-memory cache of the loggedInUser object
-    var user: LoggedInUser? = null
+    // in-memory cache of the FirebaseUser object
+    var user: FirebaseUser? = null
         private set
 
     val isLoggedIn: Boolean
@@ -19,7 +21,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
-        user = null
+        user = dataSource.getUser()
     }
 
     fun logout() {
@@ -27,19 +29,23 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String): Task<AuthResult> {
         // handle login
-        val result = dataSource.login(username, password)
+        val authTask = dataSource.login(username, password)
 
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
+        authTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = dataSource.getUser()
+                if (user!= null)
+                    setFirebaseUser(user)
+            }
         }
 
-        return result
+        return authTask
     }
 
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
+    private fun setFirebaseUser(FirebaseUser: FirebaseUser) {
+        this.user = FirebaseUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }

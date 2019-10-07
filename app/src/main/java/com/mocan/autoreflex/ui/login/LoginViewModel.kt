@@ -1,17 +1,12 @@
 package com.mocan.autoreflex.ui.login
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.mocan.autoreflex.data.LoginRepository
-import com.mocan.autoreflex.data.Result
 
 import com.mocan.autoreflex.R
-import androidx.core.content.ContextCompat.startActivity
-import android.content.Intent
-import com.mocan.autoreflex.MainMenu
 
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
@@ -23,16 +18,13 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val loginResult: LiveData<LoginResult> = _loginResult
 
     fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        val authTask = loginRepository.login(username, password)
 
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-
-
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+        authTask.addOnCompleteListener{ task ->
+            if (task.isSuccessful)
+                _loginResult.value = LoginResult(success = loginRepository.user )
+            else
+                _loginResult.value = LoginResult(error = R.string.login_failed)
         }
     }
 

@@ -12,7 +12,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseUser
 import com.mocan.autoreflex.MainMenu
 
 import com.mocan.autoreflex.R
@@ -103,9 +103,10 @@ class LoginActivity : AppCompatActivity() {
 
             finish()
         }
+
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun updateUiWithUser(model: FirebaseUser) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
 
