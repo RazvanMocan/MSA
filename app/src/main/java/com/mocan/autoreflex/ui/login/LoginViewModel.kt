@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import com.google.firebase.auth.FirebaseUser
 import com.mocan.autoreflex.data.LoginRepository
 
 import com.mocan.autoreflex.R
@@ -50,5 +51,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
+    }
+
+    fun alreadyLogged(): FirebaseUser? {
+        return loginRepository.user
     }
 }

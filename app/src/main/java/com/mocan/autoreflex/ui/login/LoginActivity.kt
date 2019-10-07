@@ -36,6 +36,11 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
+        val loggedUser = loginViewModel.alreadyLogged()
+        if (loggedUser != null) {
+            updateUiWithUser(loggedUser)
+        }
+
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 

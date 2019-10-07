@@ -1,13 +1,9 @@
 package com.mocan.autoreflex.data
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.mocan.autoreflex.R
-import com.mocan.autoreflex.ui.login.LoginResult
-import java.io.IOException
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
