@@ -56,4 +56,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     fun alreadyLogged(): FirebaseUser? {
         return loginRepository.user
     }
+
+    fun logout() {
+        loginRepository.logout()
+    }
 }

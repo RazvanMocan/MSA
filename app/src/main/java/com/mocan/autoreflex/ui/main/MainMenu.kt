@@ -1,5 +1,7 @@
-package com.mocan.autoreflex
+package com.mocan.autoreflex.ui.main
 
+import android.content.ClipData
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -13,16 +15,29 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
+import androidx.lifecycle.ViewModelProviders
+import com.mocan.autoreflex.R
+import com.mocan.autoreflex.SignUp
+import com.mocan.autoreflex.ui.login.LoginActivity
+import com.mocan.autoreflex.ui.login.LoginViewModel
+import com.mocan.autoreflex.ui.login.LoginViewModelFactory
 
 class MainMenu : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var loginViewModel: LoginViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
+            .get(LoginViewModel::class.java)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -36,8 +51,12 @@ class MainMenu : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send
+                R.id.nav_home,
+                R.id.nav_gallery,
+                R.id.nav_slideshow,
+                R.id.nav_tools,
+                R.id.nav_share,
+                R.id.nav_send
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -50,8 +69,24 @@ class MainMenu : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.sign_out)
+            logout()
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun logout() {
+        loginViewModel.logout()
+
+        val myIntent = Intent(this, LoginActivity::class.java)
+        startActivity(myIntent)
+
+        finish()
     }
 }

@@ -19,7 +19,7 @@
                 android:value="com.mocan.autoreflex.ui.login.LoginActivity" />
         </activity>
         <activity
-            android:name=".MainMenu"
+            android:name=".ui.main.MainMenu"
             android:label="@string/title_activity_main_menu"
             android:parentActivityName=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">

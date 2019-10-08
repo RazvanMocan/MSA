@@ -13,7 +13,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.google.firebase.auth.FirebaseUser
-import com.mocan.autoreflex.MainMenu
+import com.mocan.autoreflex.ui.main.MainMenu
 
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.SignUp
