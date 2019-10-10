@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
         val signUp = findViewById<TextView>(R.id.textView2)
+        val resetPassword = findViewById<TextView>(R.id.forgot_password)
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -109,6 +111,31 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+        resetPassword.setOnClickListener { resetPwd(username.text.toString()) }
+        resetPassword.visibility = View.GONE
+        loginViewModel.canReset.observe(this@LoginActivity, Observer {
+            val loginResult = it ?: return@Observer
+
+            Log.e("k", loginResult.toString())
+            if (loginResult)
+                resetPassword.visibility = View.GONE
+            else
+                resetPassword.visibility = View.VISIBLE
+        })
+
+    }
+
+    private fun resetPwd(pasword: String) {
+        val resetTask = loginViewModel.resetPassword(pasword)
+        resetTask.addOnCompleteListener {
+                task ->
+            if (task.isSuccessful)
+                Toast.makeText(applicationContext, "Reset email successfully sent",
+                    Toast.LENGTH_LONG).show()
+            else
+                Toast.makeText(applicationContext, "Wrong email address", Toast.LENGTH_LONG)
+                    .show()
+        }
     }
 
     private fun updateUiWithUser(model: FirebaseUser) {

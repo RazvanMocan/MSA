@@ -22,5 +22,9 @@ class LoginDataSource {
     fun logout() {
         auth.signOut()
     }
+
+    fun resetPassword(username: String):Task<Void> {
+        return auth.sendPasswordResetEmail(username)
+    }
 }
 

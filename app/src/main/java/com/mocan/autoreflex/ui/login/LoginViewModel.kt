@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 import com.mocan.autoreflex.data.LoginRepository
 
@@ -18,6 +19,10 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    private val _canReset = MutableLiveData<Boolean>()
+    val canReset: LiveData<Boolean> = _canReset
+
+
     fun login(username: String, password: String) {
         val authTask = loginRepository.login(username, password)
 
@@ -30,6 +35,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     fun loginDataChanged(username: String, password: String) {
+
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
@@ -41,6 +47,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
+        _canReset.value = username.isNullOrEmpty()
         return if (username.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
         } else {
@@ -59,5 +66,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun logout() {
         loginRepository.logout()
+    }
+
+    fun resetPassword(username: String): Task<Void> {
+        return loginRepository.resetPassword(username)
     }
 }

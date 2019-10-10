@@ -1,6 +1,5 @@
 package com.mocan.autoreflex.ui.main
 
-import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -16,10 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
-import com.mocan.autoreflex.SignUp
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
