@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
 import android.webkit.WebViewClient
 import android.webkit.WebChromeClient
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class GalleryFragment : Fragment() {

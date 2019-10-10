@@ -2,6 +2,7 @@ package com.mocan.autoreflex.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.findNavController
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.login.LoginActivity
@@ -36,6 +38,7 @@ class MainMenu : AppCompatActivity() {
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
+
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -56,6 +59,14 @@ class MainMenu : AppCompatActivity() {
                 R.id.nav_send
             ), drawerLayout
         )
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if (destination.id == R.id.nav_gallery)
+                fab.hide()
+            else
+                fab.show()
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
