@@ -26,5 +26,9 @@ class LoginDataSource {
     fun resetPassword(username: String):Task<Void> {
         return auth.sendPasswordResetEmail(username)
     }
+
+    fun createUser(username: String, password: String): Task<AuthResult> {
+        return auth.createUserWithEmailAndPassword(username, password)
+    }
 }
 

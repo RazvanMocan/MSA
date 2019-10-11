@@ -23,9 +23,13 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_sign_up">SignUp</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_1_username">Create Account</string>
+    <string name="tab_2_id">Add ID</string>
+    <string name="tab_3_school">Change school</string>
     <string name="login_sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
     <string name="forgot_password">Forgot password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

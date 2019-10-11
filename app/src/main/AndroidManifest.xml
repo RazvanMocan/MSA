@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.login.ResetPassword"></activity>
         <activity
-            android:name=".SignUp"
+            android:name=".ui.signup.SignUpActivity"
             android:label="@string/title_activity_sign_up"
             android:parentActivityName=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -20,7 +20,7 @@
                 android:value="com.mocan.autoreflex.ui.login.LoginActivity" />
         </activity>
         <activity
-            android:name=".ui.main.MainMenu"
+            android:name=".ui.main.MainMenuActivity"
             android:label="@string/title_activity_main_menu"
             android:parentActivityName=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">

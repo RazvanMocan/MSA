@@ -9,15 +9,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.google.firebase.auth.FirebaseUser
-import com.mocan.autoreflex.ui.main.MainMenu
+import com.mocan.autoreflex.ui.main.MainMenuActivity
 
 import com.mocan.autoreflex.R
-import com.mocan.autoreflex.SignUp
+import com.mocan.autoreflex.ui.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -105,10 +104,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         signUp.setOnClickListener {
-            val myIntent = Intent(this, SignUp::class.java)
+            val myIntent = Intent(this, SignUpActivity::class.java)
             startActivity(myIntent)
-
-            finish()
         }
 
         resetPassword.setOnClickListener { resetPwd(username.text.toString()) }
@@ -116,7 +113,6 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.canReset.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            Log.e("k", loginResult.toString())
             if (loginResult)
                 resetPassword.visibility = View.GONE
             else
@@ -142,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
 
-        val myIntent = Intent(this, MainMenu::class.java)
+        val myIntent = Intent(this, MainMenuActivity::class.java)
         startActivity(myIntent)
 
         Toast.makeText(

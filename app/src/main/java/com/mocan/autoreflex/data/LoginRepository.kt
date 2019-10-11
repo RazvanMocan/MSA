@@ -36,7 +36,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
         authTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = dataSource.getUser()
-                if (user!= null)
+                if (user != null)
                     setFirebaseUser(user)
             }
         }
@@ -52,5 +52,17 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     fun resetPassword(username: String):Task<Void> {
         return dataSource.resetPassword(username)
+    }
+
+    fun createUser(username: String, password: String): Task<AuthResult> {
+        val createTask =  dataSource.createUser(username, password)
+        createTask.addOnCompleteListener{task ->
+            if (task.isSuccessful) {
+                val user = dataSource.getUser()
+                if (user != null)
+                    setFirebaseUser(user)
+            }
+        }
+        return createTask
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import com.mocan.autoreflex.data.LoginRepository
 
@@ -47,7 +48,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
-        _canReset.value = username.isNullOrEmpty()
+        _canReset.value = username.isEmpty()
         return if (username.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
         } else {
@@ -70,5 +71,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun resetPassword(username: String): Task<Void> {
         return loginRepository.resetPassword(username)
+    }
+
+    fun createUser(username: String, password: String): Task<AuthResult> {
+        return loginRepository.createUser(username, password)
     }
 }
