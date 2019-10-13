@@ -14,8 +14,8 @@ import com.mocan.autoreflex.ui.login.LoginViewModelFactory
 
 class SignUpActivity : AppCompatActivity(),
                        UserCreationFragment.OnFragmentInteractionListener,
-                       IDFragment.OnFragmentInteractionListener,
-                       SchoolSelectionFragment.OnFragmentInteractionListener {
+                        IDFragment.OnFragmentInteractionListener,
+                        SchoolSelectionFragment.OnFragmentInteractionListener{
     private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

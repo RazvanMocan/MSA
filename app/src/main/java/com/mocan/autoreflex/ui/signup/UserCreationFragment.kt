@@ -3,11 +3,18 @@ package com.mocan.autoreflex.ui.signup
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
+import com.mocan.autoreflex.ui.login.LoginViewModel
+import com.mocan.autoreflex.ui.login.LoginViewModelFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,13 +34,24 @@ class UserCreationFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+//    private lateinit var button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        loginViewModel = ViewModelProviders.of(this,
+            LoginViewModelFactory()
+        )
+            .get(LoginViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -41,7 +59,17 @@ class UserCreationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_creation, container, false)
+        val root = inflater.inflate(R.layout.fragment_user_creation, container, false)
+        val username = root.findViewById<EditText>(R.id.username_create)
+        val password = root.findViewById<EditText>(R.id.password_create)
+        root.findViewById<Button>(R.id.button).setOnClickListener { v ->
+            val task = loginViewModel.createUser(username.text.toString(), password.text.toString())
+            task.addOnCompleteListener { task1 ->
+                if (task1.isSuccessful)
+                    Log.e("Merge cumva", "Merge, oare?")
+            }
+        }
+        return root
     }
 
     // TODO: Rename method, update argument and hook method into UI event
