@@ -1,10 +1,13 @@
 package com.mocan.autoreflex.ui.signup
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,11 +18,11 @@ import com.mocan.autoreflex.R
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
+import java.io.ByteArrayOutputStream
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +44,7 @@ class IDFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val READ_REQUEST_CODE: Int = 42
+    private val REQUEST_IMAGE_CAPTURE: Int = 1
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var mStorageRef: StorageReference
 
@@ -68,8 +72,10 @@ class IDFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_id, container, false)
         val searchBtn = root.findViewById<Button>(R.id.button3)
+        val takePhoto = root.findViewById<Button>(R.id.button2)
 
         searchBtn.setOnClickListener { performFileSearch() }
+        takePhoto.setOnClickListener { perforTakePhoto() }
 
         return root
     }
@@ -89,8 +95,12 @@ class IDFragment : Fragment() {
             // it would be "*/*".
             type = "image/*"
         }
-        Log.w("Sunt aici", "acum cu voi")
         startActivityForResult(intent, READ_REQUEST_CODE)
+    }
+
+    fun perforTakePhoto() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
@@ -108,7 +118,34 @@ class IDFragment : Fragment() {
                 Log.e("Te rog", "mergi")
                 uploadFile(uri)
             }
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Log.e("Te rog", "mergi 4")
+            val imageBitmap = resultData?.extras?.get("data") as Bitmap
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            uploadFileMemory(data)
         }
+    }
+
+
+    private fun uploadFileMemory(data: ByteArray) {
+        val user = FirebaseAuth.getInstance().currentUser
+        Log.e("Te rog", user.toString())
+
+        if (user != null) {
+            Log.e("Te rog", "mergi 3")
+
+            val userID = user.uid
+            val storageReference = mStorageRef.child("new_users/$userID.jpg")
+            storageReference.putBytes(data).addOnCompleteListener{task ->
+                if (task.isSuccessful) {
+                    Log.e("file uploaded", "Success!")
+                }
+            }
+
+        }
+
     }
 
     private fun uploadFile(uri: Uri) {
@@ -128,71 +165,71 @@ class IDFragment : Fragment() {
 
     }
 
-private fun checkFilePermissions() {
-    var permissionCheck = checkSelfPermission(context!!, "Manifest.permission.READ_EXTERNAL_STORAGE")
-    permissionCheck += checkSelfPermission(context!!, "Manifest.permission.WRITE_EXTERNAL_STORAGE")
-    if (permissionCheck != 0) {
-        this.requestPermissions(
-            arrayOf(
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ), 1001
-        ) //Any number
-    }
-}
-
-// TODO: Rename method, update argument and hook method into UI event
-fun onButtonPressed(uri: Uri) {
-    listener?.onFragmentInteraction(uri)
-}
-
-override fun onAttach(context: Context) {
-    super.onAttach(context)
-    if (context is OnFragmentInteractionListener) {
-        listener = context
-    } else {
-        throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-    }
-}
-
-override fun onDetach() {
-    super.onDetach()
-    listener = null
-}
-
-/**
- * This interface must be implemented by activities that contain this
- * fragment to allow an interaction in this fragment to be communicated
- * to the activity and potentially other fragments contained in that
- * activity.
- *
- *
- * See the Android Training lesson [Communicating with Other Fragments]
- * (http://developer.android.com/training/basics/fragments/communicating.html)
- * for more information.
- */
-interface OnFragmentInteractionListener {
-    // TODO: Update argument type and name
-    fun onFragmentInteraction(uri: Uri)
-}
-
-companion object {
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment IDFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    @JvmStatic
-    fun newInstance(param1: String, param2: String) =
-        IDFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
-                putString(ARG_PARAM2, param2)
-            }
+    private fun checkFilePermissions() {
+        var permissionCheck = checkSelfPermission(context!!, "Manifest.permission.READ_EXTERNAL_STORAGE")
+        permissionCheck += checkSelfPermission(context!!, "Manifest.permission.WRITE_EXTERNAL_STORAGE")
+        if (permissionCheck != 0) {
+            this.requestPermissions(
+                arrayOf(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ), 1001
+            ) //Any number
         }
-}
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     *
+     *
+     * See the Android Training lesson [Communicating with Other Fragments]
+     * (http://developer.android.com/training/basics/fragments/communicating.html)
+     * for more information.
+     */
+    interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        fun onFragmentInteraction(uri: Uri)
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment IDFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            IDFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
 }
