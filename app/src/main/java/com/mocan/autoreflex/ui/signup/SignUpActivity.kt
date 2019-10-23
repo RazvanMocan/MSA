@@ -41,6 +41,6 @@ class SignUpActivity : AppCompatActivity(),
     }
 
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // created functions use File | Settings | File Templates.
     }
 }
