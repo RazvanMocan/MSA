@@ -74,6 +74,8 @@ class IDFragment : Fragment() {
         val searchBtn = root.findViewById<Button>(R.id.button3)
         val takePhoto = root.findViewById<Button>(R.id.button2)
 
+        root.findViewById<Button>(R.id.tmpFinish).setOnClickListener { _ ->  onButtonPressed(Uri.EMPTY)}
+
         searchBtn.setOnClickListener { performFileSearch() }
         takePhoto.setOnClickListener { perforTakePhoto() }
 
