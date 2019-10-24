@@ -30,5 +30,9 @@ class LoginDataSource {
     fun createUser(username: String, password: String): Task<AuthResult> {
         return auth.createUserWithEmailAndPassword(username, password)
     }
+
+    fun isLoggedIn(): Boolean {
+        return auth.currentUser != null
+    }
 }
 

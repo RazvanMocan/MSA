@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -36,11 +37,6 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
-
-        val loggedUser = loginViewModel.alreadyLogged()
-        if (loggedUser != null) {
-            updateUiWithUser(loggedUser)
-        }
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -121,6 +117,15 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun alreadyLogged() {
+        val loggedUser = loginViewModel.alreadyLogged()
+        Toast.makeText(applicationContext, "User: " + loggedUser.toString(), Toast.LENGTH_LONG)
+            .show()
+        if (loggedUser != null) {
+            updateUiWithUser(loggedUser)
+        }
+    }
+
     private fun resetPwd(pasword: String) {
         val resetTask = loginViewModel.resetPassword(pasword)
         resetTask.addOnCompleteListener {
@@ -150,6 +155,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStart() {
+        alreadyLogged()
+        super.onStart()
     }
 }
 

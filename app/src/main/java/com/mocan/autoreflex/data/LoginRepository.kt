@@ -15,8 +15,11 @@ class LoginRepository(val dataSource: LoginDataSource) {
     var user: FirebaseUser? = null
         private set
 
-    val isLoggedIn: Boolean
-        get() = user != null
+
+    fun checkLoggedIn() {
+        if(user == null && dataSource.isLoggedIn())
+            user = dataSource.getUser()
+    }
 
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted

@@ -67,6 +67,8 @@ class UserCreationFragment : Fragment() {
             task.addOnCompleteListener { task1 ->
                 if (task1.isSuccessful)
                     Log.e("Merge cumva", "Merge, oare?")
+                Toast.makeText(root.context, "User: " + loginViewModel.alreadyLogged().toString(),
+                    Toast.LENGTH_LONG).show()
             }
         }
         return root

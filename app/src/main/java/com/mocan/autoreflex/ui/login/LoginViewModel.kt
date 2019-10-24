@@ -62,6 +62,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     fun alreadyLogged(): FirebaseUser? {
+        loginRepository.checkLoggedIn()
         return loginRepository.user
     }
 
