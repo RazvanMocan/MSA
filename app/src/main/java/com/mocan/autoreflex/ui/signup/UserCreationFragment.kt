@@ -70,12 +70,13 @@ class UserCreationFragment : Fragment() {
                 Toast.makeText(root.context, "User: " + loginViewModel.alreadyLogged().toString(),
                     Toast.LENGTH_LONG).show()
             }
+            onButtonPressed(1)
         }
         return root
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
+    fun onButtonPressed(uri: Int) {
         listener?.onFragmentInteraction(uri)
     }
 
@@ -106,7 +107,7 @@ class UserCreationFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentInteraction(int: Int)
     }
 
     companion object {

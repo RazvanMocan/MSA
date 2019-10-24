@@ -17,14 +17,16 @@ class SignUpActivity : AppCompatActivity(),
                         IDFragment.OnFragmentInteractionListener,
                         SchoolSelectionFragment.OnFragmentInteractionListener{
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var viewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         val sectionsPagerAdapter =
             SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        viewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
+
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -38,6 +40,10 @@ class SignUpActivity : AppCompatActivity(),
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+    }
+
+    override fun onFragmentInteraction(int: Int) {
+        viewPager.currentItem = int
     }
 
     override fun onFragmentInteraction(uri: Uri) {
