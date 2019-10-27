@@ -14,6 +14,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.messaging.FirebaseMessaging
 import com.mocan.autoreflex.ui.main.MainMenuActivity
 
 import com.mocan.autoreflex.R
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        startService(Intent(this, NotificationReceiver::class.java))
         setContentView(R.layout.activity_login)
 
         val username = findViewById<EditText>(R.id.username)

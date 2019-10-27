@@ -17,7 +17,9 @@ import android.widget.Button
 import com.mocan.autoreflex.R
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mocan.autoreflex.ui.login.LoginViewModel
@@ -155,14 +157,19 @@ class IDFragment : Fragment() {
         if (user != null) {
             Log.e("Te rog", "mergi 3")
 
-            val userID = user.uid
-            val storageReference = mStorageRef.child("new_users/$userID.jpg")
-            storageReference.putFile(uri).addOnCompleteListener{task ->
-                if (task.isSuccessful) {
-                    Log.e("file uploaded", "Success!")
-                }
-            }
-
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Get new Instance ID token
+                        val userID = task.result?.token ?: user.uid
+                        val storageReference = mStorageRef.child("new_users/$userID.jpg")
+                        storageReference.putFile(uri).addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
+                                Log.e("file uploaded", "Success!")
+                            }
+                        }
+                    }
+                })
         }
 
     }
