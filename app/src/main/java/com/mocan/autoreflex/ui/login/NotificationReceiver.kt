@@ -2,11 +2,13 @@ package com.mocan.autoreflex.ui.login
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.mocan.autoreflex.R
 
 class NotificationReceiver : FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage) {
@@ -20,6 +22,7 @@ class NotificationReceiver : FirebaseMessagingService() {
             PendingIntent.FLAG_ONE_SHOT)
 
         val notificationBuilder = NotificationCompat.Builder(this, "channel_id")
+            .setSmallIcon(R.drawable.ic_menu_send)
             .setContentTitle(p0.notification?.title)
             .setContentText(p0.notification?.body)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -31,6 +34,10 @@ class NotificationReceiver : FirebaseMessagingService() {
             // notificationId is a unique int for each notification that you must define
             notify(999, notificationBuilder.build())
         }
+    }
+
+    override fun onNewToken(p0: String) {
+        super.onNewToken(p0)
     }
 }
 

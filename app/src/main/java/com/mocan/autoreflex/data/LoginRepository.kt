@@ -3,6 +3,7 @@ package com.mocan.autoreflex.data
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GetTokenResult
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -67,5 +68,9 @@ class LoginRepository(val dataSource: LoginDataSource) {
             }
         }
         return createTask
+    }
+
+    fun userPersmissions(): Task<GetTokenResult> {
+        return user!!.getIdToken(true)
     }
 }

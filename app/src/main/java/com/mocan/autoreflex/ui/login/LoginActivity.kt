@@ -14,10 +14,9 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.messaging.FirebaseMessaging
-import com.mocan.autoreflex.ui.main.MainMenuActivity
 
 import com.mocan.autoreflex.R
+import com.mocan.autoreflex.ui.main.MainMenuActivity
 import com.mocan.autoreflex.ui.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -141,11 +140,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUiWithUser(model: FirebaseUser) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-
-        val myIntent = Intent(this, MainMenuActivity::class.java)
+    private fun changeActivity(activity: Class<*>, welcome:String, displayName:String?) {
+        val myIntent = Intent(this, activity)
         startActivity(myIntent)
 
         Toast.makeText(
@@ -153,6 +149,21 @@ class LoginActivity : AppCompatActivity() {
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun updateUiWithUser(model: FirebaseUser) {
+        val welcome = getString(R.string.welcome)
+        val displayName = model.displayName
+
+        val activity = loginViewModel.getActivity()
+
+        activity.addOnSuccessListener { result -> Log.e("type ", result.claims["type"].toString())
+            when(result.claims["type"]) {
+                "scoala" -> changeActivity(SignUpActivity::class.java, welcome, displayName)
+                else -> changeActivity(MainMenuActivity::class.java, welcome, displayName)
+            } }
+
+
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

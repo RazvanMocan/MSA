@@ -161,7 +161,8 @@ class IDFragment : Fragment() {
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Get new Instance ID token
-                        val userID = task.result?.token ?: user.uid
+                        Log.e("instance ID", task.result!!.token)
+                        val userID = task.result?.token + " MYUID " + user.uid
                         val storageReference = mStorageRef.child("new_users/$userID.jpg")
                         storageReference.putFile(uri).addOnCompleteListener { task2 ->
                             if (task2.isSuccessful) {

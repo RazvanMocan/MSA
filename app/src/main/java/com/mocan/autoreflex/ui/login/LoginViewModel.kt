@@ -7,6 +7,7 @@ import android.util.Patterns
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GetTokenResult
 import com.mocan.autoreflex.data.LoginRepository
 
 import com.mocan.autoreflex.R
@@ -76,5 +77,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun createUser(username: String, password: String): Task<AuthResult> {
         return loginRepository.createUser(username, password)
+    }
+
+    fun getActivity(): Task<GetTokenResult> {
+        return loginRepository.userPersmissions()
     }
 }
