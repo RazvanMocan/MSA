@@ -1,7 +1,6 @@
 package com.mocan.autoreflex.ui.signup
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
@@ -62,15 +62,20 @@ class UserCreationFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_user_creation, container, false)
         val username = root.findViewById<EditText>(R.id.username_create)
         val password = root.findViewById<EditText>(R.id.password_create)
+        val loading = root.findViewById<ProgressBar>(R.id.create_loading)
+
         root.findViewById<Button>(R.id.button).setOnClickListener { v ->
+            loading.visibility = View.VISIBLE
             val task = loginViewModel.createUser(username.text.toString(), password.text.toString())
             task.addOnCompleteListener { task1 ->
-                if (task1.isSuccessful)
+                loading.visibility = View.INVISIBLE
+                if (task1.isSuccessful) {
                     Log.e("Merge cumva", "Merge, oare?")
+                    onButtonPressed(1)
+                }
                 Toast.makeText(root.context, "User: " + loginViewModel.alreadyLogged().toString(),
                     Toast.LENGTH_LONG).show()
             }
-            onButtonPressed(1)
         }
         return root
     }
