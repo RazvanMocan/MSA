@@ -14,6 +14,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
+import android.widget.ProgressBar
+import android.widget.TextView
+import com.mocan.autoreflex.R
+import kotlinx.android.synthetic.main.fragment_school_selection.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,6 +39,10 @@ class SchoolSelectionFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val optionsList: ArrayList<String> = ArrayList()
+    private lateinit var progress: ProgressBar
+    private lateinit var label: TextView
+    private lateinit var select: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +50,6 @@ class SchoolSelectionFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        getOptions()
     }
 
     override fun onCreateView(
@@ -50,10 +57,15 @@ class SchoolSelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val root = inflater.inflate(com.mocan.autoreflex.R.layout.fragment_school_selection, container, false)
+        val root = inflater.inflate(R.layout.fragment_school_selection, container, false)
         
-        val select = root.findViewById<Button>(com.mocan.autoreflex.R.id.select_school)
-        
+        select = root.findViewById<Button>(R.id.select_school)
+        progress = root.findViewById(R.id.options_progress)
+        label = root.findViewById(R.id.options_label)
+
+        select.isEnabled = false
+        getOptions()
+
         select.setOnClickListener { v -> showOptions() }
         
         return root
@@ -69,12 +81,20 @@ class SchoolSelectionFragment : Fragment() {
                 for (singleSnapshot in dataSnapshot.children) {
                     optionsList.add(singleSnapshot.key!!)
                 }
+                finishWait()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e("database", "onCancelled", databaseError.toException())
             }
         })
+    }
+
+    private fun finishWait() {
+        progress.visibility = View.GONE
+        label.visibility = View.GONE
+
+        select.isEnabled = true
     }
 
     private fun showOptions() {
