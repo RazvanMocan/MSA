@@ -1,5 +1,6 @@
 package com.mocan.autoreflex.ui.signup
 
+import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,7 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mocan.autoreflex.R
+import android.widget.Button
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.FirebaseDatabase
+import android.util.Log
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +34,7 @@ class SchoolSelectionFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private val optionsList: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +42,7 @@ class SchoolSelectionFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        getOptions()
     }
 
     override fun onCreateView(
@@ -41,7 +50,45 @@ class SchoolSelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_school_selection, container, false)
+        val root = inflater.inflate(com.mocan.autoreflex.R.layout.fragment_school_selection, container, false)
+        
+        val select = root.findViewById<Button>(com.mocan.autoreflex.R.id.select_school)
+        
+        select.setOnClickListener { v -> showOptions() }
+        
+        return root
+    }
+
+    private fun getOptions() {
+        val database = FirebaseDatabase.getInstance().reference
+        val ref = database.child("Schools")
+
+        val phoneQuery = ref.orderByKey()
+        phoneQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (singleSnapshot in dataSnapshot.children) {
+                    optionsList.add(singleSnapshot.key!!)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("database", "onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    private fun showOptions() {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Choose an animal")
+
+        // add a list
+        builder.setItems(optionsList.toTypedArray()) {
+                dialog, which -> optionsList.get(which)
+        }
+
+        // create and show the alert dialog
+        val dialog = builder.create()
+        dialog.show()
     }
 
     // TODO: Rename method, update argument and hook method into UI event
