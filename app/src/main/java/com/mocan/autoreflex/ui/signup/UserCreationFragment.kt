@@ -2,6 +2,7 @@ package com.mocan.autoreflex.ui.signup
 
 import android.content.Context
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
+import android.app.Activity
+import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat.getSystemService
+import android.view.inputmethod.InputMethodManager
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,6 +72,9 @@ class UserCreationFragment : Fragment() {
 
         root.findViewById<Button>(R.id.button).setOnClickListener { v ->
             loading.visibility = View.VISIBLE
+
+            password.onEditorAction(EditorInfo.IME_ACTION_DONE)
+
             val task = loginViewModel.createUser(username.text.toString(), password.text.toString())
             task.addOnCompleteListener { task1 ->
                 loading.visibility = View.INVISIBLE
