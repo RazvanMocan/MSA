@@ -158,8 +158,9 @@ class SchoolSelectionFragment : Fragment() {
         { dialog, which ->
             category = typesList.get(which)
             updateDB(FirebaseAuth.getInstance().uid!!)
-            dialog.dismiss()
             next()
+            dialog.dismiss()
+            onButtonPressed(2)
         })
         // create and show the alert dialog
         val dialog = builder.create()
@@ -167,7 +168,7 @@ class SchoolSelectionFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
+    fun onButtonPressed(uri: Int) {
         listener?.onFragmentInteraction(uri)
     }
 
@@ -198,7 +199,7 @@ class SchoolSelectionFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentInteraction(uri: Int)
     }
 
     companion object {
