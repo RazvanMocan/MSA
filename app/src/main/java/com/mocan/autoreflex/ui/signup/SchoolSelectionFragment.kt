@@ -2,22 +2,20 @@ package com.mocan.autoreflex.ui.signup
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import com.google.firebase.database.DatabaseError
+import android.widget.*
+import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import android.util.Log
-import android.widget.ProgressBar
-import android.widget.TextView
+import com.google.firebase.database.ValueEventListener
 import com.mocan.autoreflex.R
-import kotlinx.android.synthetic.main.fragment_school_selection.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,7 +40,9 @@ class SchoolSelectionFragment : Fragment() {
     private lateinit var progress: ProgressBar
     private lateinit var label: TextView
     private lateinit var select: Button
+    private lateinit var type: Button
 
+    private var school: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,17 +58,46 @@ class SchoolSelectionFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_school_selection, container, false)
-        
-        select = root.findViewById<Button>(R.id.select_school)
+
+        select = root.findViewById(R.id.select_school)
+        type = root.findViewById(R.id.select_type)
         progress = root.findViewById(R.id.options_progress)
         label = root.findViewById(R.id.options_label)
 
         select.isEnabled = false
         getOptions()
 
-        select.setOnClickListener { v -> showOptions() }
-        
+        select.setOnClickListener { v -> showOptions()
+            Log.wtf("wtf, merge?", school)
+            type.isEnabled = true
+        }
+
+        type.setOnClickListener { v -> getTypeOptions()}
+
         return root
+    }
+
+    private fun getTypeOptions() {
+        val database = FirebaseDatabase.getInstance().reference
+        val ref = database.child("Schools")
+
+        val phoneQuery = ref.orderByKey()
+        phoneQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (singleSnapshot in dataSnapshot.children) {
+                    optionsList.add(singleSnapshot.key!!)
+                }
+                next()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("database", "onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    private fun next() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun getOptions() {
@@ -97,15 +126,17 @@ class SchoolSelectionFragment : Fragment() {
         select.isEnabled = true
     }
 
-    private fun showOptions() {
+    fun showOptions() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Choose an animal")
 
-        // add a list
-        builder.setItems(optionsList.toTypedArray()) {
-                dialog, which -> optionsList.get(which)
-        }
-
+        builder.setSingleChoiceItems(optionsList.toTypedArray(), 0 , DialogInterface.OnClickListener
+        { dialog, which ->
+                school = optionsList.get(which)
+                Log.w("scoala", school)
+                type.isEnabled = true
+                dialog.dismiss()
+        })
         // create and show the alert dialog
         val dialog = builder.create()
         dialog.show()
