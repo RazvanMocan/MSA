@@ -36,6 +36,7 @@
 
     <string name="select_school">Please select your school</string>
     <string name="select_school2">Select school</string>
+    <string name="select_type">Select type</string>
     <string name="select_wait">Waiting for data from server</string>
 
     <!-- TODO: Remove or change this placeholder text -->
