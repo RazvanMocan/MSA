@@ -37,6 +37,8 @@ class SchoolSelectionFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val optionsList: ArrayList<String> = ArrayList()
+    private val typesList: ArrayList<String> = ArrayList()
+
     private lateinit var progress: ProgressBar
     private lateinit var label: TextView
     private lateinit var select: Button
@@ -67,25 +69,23 @@ class SchoolSelectionFragment : Fragment() {
         select.isEnabled = false
         getOptions()
 
-        select.setOnClickListener { v -> showOptions()
-            Log.wtf("wtf, merge?", school)
-            type.isEnabled = true
-        }
+        select.setOnClickListener { v -> showOptions() }
 
-        type.setOnClickListener { v -> getTypeOptions()}
+        type.setOnClickListener { v -> showTypes()}
 
         return root
     }
 
     private fun getTypeOptions() {
         val database = FirebaseDatabase.getInstance().reference
-        val ref = database.child("Schools")
+        val ref = database.child("Schools").child(school).child("Category")
+        typesList.clear()
 
         val phoneQuery = ref.orderByKey()
         phoneQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (singleSnapshot in dataSnapshot.children) {
-                    optionsList.add(singleSnapshot.key!!)
+                    typesList.add(singleSnapshot.value!! as String)
                 }
                 next()
             }
@@ -97,7 +97,7 @@ class SchoolSelectionFragment : Fragment() {
     }
 
     private fun next() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun getOptions() {
@@ -133,9 +133,23 @@ class SchoolSelectionFragment : Fragment() {
         builder.setSingleChoiceItems(optionsList.toTypedArray(), 0 , DialogInterface.OnClickListener
         { dialog, which ->
                 school = optionsList.get(which)
-                Log.w("scoala", school)
+                getTypeOptions()
                 type.isEnabled = true
                 dialog.dismiss()
+        })
+        // create and show the alert dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    fun showTypes() {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Choose an animal")
+
+        builder.setSingleChoiceItems(typesList.toTypedArray(), 0 , DialogInterface.OnClickListener
+        { dialog, which ->
+            Log.w("categorie", typesList.get(which))
+            next()
         })
         // create and show the alert dialog
         val dialog = builder.create()
