@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -45,6 +46,7 @@ class SchoolSelectionFragment : Fragment() {
     private lateinit var type: Button
 
     private var school: String = ""
+    private var category: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +73,7 @@ class SchoolSelectionFragment : Fragment() {
 
         select.setOnClickListener { v -> showOptions() }
 
-        type.setOnClickListener { v -> showTypes()}
+        type.setOnClickListener { v -> showTypes() }
 
         return root
     }
@@ -119,6 +121,12 @@ class SchoolSelectionFragment : Fragment() {
         })
     }
 
+    private fun updateDB(id: String) {
+        val database = FirebaseDatabase.getInstance().reference
+        val ref = database.child("Schools").child(school).child("Students").
+                child(id).setValue(category)
+    }
+
     private fun finishWait() {
         progress.visibility = View.GONE
         label.visibility = View.GONE
@@ -148,7 +156,9 @@ class SchoolSelectionFragment : Fragment() {
 
         builder.setSingleChoiceItems(typesList.toTypedArray(), 0 , DialogInterface.OnClickListener
         { dialog, which ->
-            Log.w("categorie", typesList.get(which))
+            category = typesList.get(which)
+            updateDB(FirebaseAuth.getInstance().uid!!)
+            dialog.dismiss()
             next()
         })
         // create and show the alert dialog
