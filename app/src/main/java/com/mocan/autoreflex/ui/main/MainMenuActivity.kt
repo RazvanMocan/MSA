@@ -2,7 +2,6 @@ package com.mocan.autoreflex.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.findNavController
@@ -16,9 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import androidx.core.view.children
 import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
+import com.mocan.autoreflex.UserMenuFactory
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
@@ -49,15 +49,16 @@ class MainMenuActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
+//        navView.menu.findItem()
+//        var
+
+        val factory = UserMenuFactory("")
+        val navGraph = factory.selectView(navView)
+
         appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home,
-                R.id.nav_gallery,
-                R.id.nav_slideshow,
-                R.id.nav_tools,
-                R.id.nav_share,
-                R.id.nav_send
-            ), drawerLayout
+            navGraph,
+            drawerLayout
         )
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
