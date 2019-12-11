@@ -9,8 +9,8 @@ import com.mocan.autoreflex.R
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_1_username,
-    R.string.tab_2_id,
-    R.string.tab_3_school
+    R.string.tab_3_school,
+    R.string.tab_2_id
 )
 
 /**
