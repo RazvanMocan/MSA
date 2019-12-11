@@ -2,26 +2,26 @@ package com.mocan.autoreflex.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import androidx.core.view.children
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.UserMenuFactory
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
+
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -53,7 +53,9 @@ class MainMenuActivity : AppCompatActivity() {
 //        navView.menu.findItem()
 //        var
 
-        val factory = UserMenuFactory("")
+        val bundle: Bundle? = intent.extras
+        val message: String? = bundle?.getString("type")
+        val factory = UserMenuFactory(message!!)
         val navGraph = factory.selectView(navView)
 
         appBarConfiguration = AppBarConfiguration(

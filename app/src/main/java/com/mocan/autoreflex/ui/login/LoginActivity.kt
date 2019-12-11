@@ -140,8 +140,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeActivity(activity: Class<*>, welcome:String, displayName:String?) {
+    private fun changeActivity(activity: Class<*>, welcome:String, displayName:String?, type: String?) {
         val myIntent = Intent(this, activity)
+        myIntent.putExtra("type", type)
         startActivity(myIntent)
 
         Toast.makeText(
@@ -157,12 +158,15 @@ class LoginActivity : AppCompatActivity() {
 
         val activity = loginViewModel.getActivity()
 
-        activity.addOnSuccessListener { result -> Log.e("type ", result.claims["type"].toString())
-            when(result.claims["type"]) {
-                "scoala" -> changeActivity(SignUpActivity::class.java, welcome, displayName)
-                else -> changeActivity(MainMenuActivity::class.java, welcome, displayName)
-            } }
-
+        activity.addOnSuccessListener { result ->
+            Log.e("type ", result.claims["type"].toString())
+            changeActivity(
+                MainMenuActivity::class.java,
+                welcome,
+                displayName,
+                result.claims["type"] as String? ?: ""
+            )
+        }
 
     }
 
