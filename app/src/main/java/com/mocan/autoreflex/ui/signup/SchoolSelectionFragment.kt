@@ -164,8 +164,7 @@ class SchoolSelectionFragment : Fragment() {
         })
         // create and show the alert dialog
         val dialog = builder.create()
-        dialog.show()
-    }
+     }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Int) {
