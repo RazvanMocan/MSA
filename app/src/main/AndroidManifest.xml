@@ -30,7 +30,9 @@
             android:name=".ui.main.MainMenuActivity"
             android:label="@string/title_activity_main_menu"
             android:parentActivityName=".ui.login.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mocan.autoreflex.ui.login.LoginActivity" />
