@@ -2,21 +2,18 @@ package com.mocan.autoreflex
 
 import com.google.android.material.navigation.NavigationView
 
-class UserMenuFactory {
-    private var type:String
-
-    constructor(type: String) {
-        this.type = type
-    }
+class UserMenuFactory(private var type: String) {
 
     fun selectView(navView: NavigationView): Set<Int> {
         if (!type.equals("scoala")) {
             navView.menu.findItem(R.id.nav_home).isVisible = true
             navView.menu.findItem(R.id.nav_gallery).isVisible = true
+            navView.menu.findItem(R.id.nav_tasks).isVisible = true
 
             return setOf(
                 R.id.nav_home,
-                R.id.nav_gallery
+                R.id.nav_gallery,
+                R.id.nav_tasks
             )
         } else {
             navView.menu.findItem(R.id.nav_home).isVisible = true
@@ -25,6 +22,7 @@ class UserMenuFactory {
             navView.menu.findItem(R.id.nav_share).isVisible = true
             navView.menu.findItem(R.id.nav_send).isVisible = true
             navView.menu.findItem(R.id.cominicate).isVisible = true
+            navView.menu.findItem(R.id.documentsList).isVisible = true
         }
 
         return setOf(
@@ -32,7 +30,8 @@ class UserMenuFactory {
             R.id.nav_slideshow,
             R.id.nav_tools,
             R.id.nav_share,
-            R.id.nav_send
+            R.id.nav_send,
+            R.id.documentsList
         )
     }
 }
