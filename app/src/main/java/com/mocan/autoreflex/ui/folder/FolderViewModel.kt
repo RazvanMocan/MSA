@@ -1,7 +1,6 @@
 package com.mocan.autoreflex.ui.folder
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
@@ -9,6 +8,7 @@ import com.google.firebase.database.*
 
 class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.getInstance().reference) : ViewModel() {
     private val category = "Tasks"
+    private lateinit var taskList: ArrayList<String>
 
     companion object Admin {
         var admin = false
@@ -29,7 +29,7 @@ class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.
     fun getTasks(): Task<List<String>> {
         val listener = TaskCompletionSource<List<String>>()
 
-        val taskList = ArrayList<String>()
+        taskList = ArrayList()
 
         val ref = database.child(category)
 
