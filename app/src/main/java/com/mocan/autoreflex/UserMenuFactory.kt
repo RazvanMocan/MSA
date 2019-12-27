@@ -5,7 +5,7 @@ import com.google.android.material.navigation.NavigationView
 class UserMenuFactory(private var type: String) {
 
     fun selectView(navView: NavigationView): Set<Int> {
-        if (!type.equals("scoala")) {
+        if (type != "scoala") {
             navView.menu.findItem(R.id.nav_home).isVisible = true
             navView.menu.findItem(R.id.nav_gallery).isVisible = true
             navView.menu.findItem(R.id.nav_tasks).isVisible = true
