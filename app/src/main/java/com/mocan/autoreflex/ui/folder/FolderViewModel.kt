@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.database.*
 
+
 class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.getInstance().reference) : ViewModel() {
     private val category = "Tasks"
     private lateinit var taskList: ArrayList<String>
@@ -49,5 +50,14 @@ class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.
         })
 
         return listener.task
+    }
+
+    fun addTask(task: String) {
+        val key = taskList.size + 1
+
+        val users: HashMap<String, String> = HashMap()
+        users[key.toString()] = task
+
+        database.child(category).updateChildren(users as Map<String, Any>)
     }
 }
