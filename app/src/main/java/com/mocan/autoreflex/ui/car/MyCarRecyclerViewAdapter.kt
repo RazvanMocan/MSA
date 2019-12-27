@@ -9,17 +9,17 @@ import com.mocan.autoreflex.R
 
 
 import com.mocan.autoreflex.ui.car.CarFragment.OnListFragmentInteractionListener
-import com.mocan.autoreflex.ui.car.dummy.DummyContent.DummyItem
+import com.mocan.autoreflex.ui.car.dummy.DummyContent.CarItem
 
 import kotlinx.android.synthetic.main.fragment_car.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [CarItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
 class MyCarRecyclerViewAdapter(
-    private val mValues: List<DummyItem>,
+    private val mValues: List<CarItem>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyCarRecyclerViewAdapter.ViewHolder>() {
 
@@ -27,7 +27,7 @@ class MyCarRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as CarItem
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -42,8 +42,8 @@ class MyCarRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.mContentView.text = item.content
+        holder.mIdView.text = item.index
+        holder.mContentView.text = item.id
 
         with(holder.mView) {
             tag = item

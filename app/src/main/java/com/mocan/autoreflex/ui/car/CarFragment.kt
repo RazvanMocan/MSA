@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import com.mocan.autoreflex.R
 
 import com.mocan.autoreflex.ui.car.dummy.DummyContent
-import com.mocan.autoreflex.ui.car.dummy.DummyContent.DummyItem
+import com.mocan.autoreflex.ui.car.dummy.DummyContent.CarItem
 
 /**
  * A fragment representing a list of Items.
@@ -32,6 +32,8 @@ class CarFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+
     }
 
     override fun onCreateView(
@@ -47,9 +49,14 @@ class CarFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyCarRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                DummyContent.ITEMS.task.addOnSuccessListener { list ->
+                    adapter = MyCarRecyclerViewAdapter(list, listener)
+                }
             }
         }
+
+
+
         return view
     }
 
@@ -80,7 +87,7 @@ class CarFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: CarItem?)
     }
 
     companion object {

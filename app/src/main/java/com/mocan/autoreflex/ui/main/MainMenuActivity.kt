@@ -106,6 +106,6 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         finish()
     }
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onListFragmentInteraction(item: DummyContent.CarItem?) {
     }
 }
