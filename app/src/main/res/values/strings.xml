@@ -30,6 +30,7 @@
     <string name="sign_out">Sign out</string>
     <string name="forgot_password">Forgot password</string>
     <string name="document_list">Documents list</string>
+    <string name="car_list">Car list</string>
 
     <string name="user_creation">Create account</string>
     <string name="id_gathering">We need your id</string>

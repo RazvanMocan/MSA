@@ -46,4 +46,11 @@
         android:name="com.mocan.autoreflex.ui.folder.FolderFragment"
         android:label="@string/document_list"
         tools:layout="@layout/folder_fragment"/>
+
+
+    <fragment
+        android:id="@+id/car_fragment"
+        android:name="com.mocan.autoreflex.ui.car.CarFragment"
+        android:label="@string/car_list"
+        tools:layout="@layout/fragment_car"/>
 </navigation>

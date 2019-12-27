@@ -29,6 +29,12 @@
             android:icon="@drawable/common_full_open_on_phone"
             android:title="@string/document_list"
             android:visible="false"/>
+
+        <item
+            android:id="@+id/car_fragment"
+            android:icon="@drawable/ic_menu_car"
+            android:title="@string/document_list"
+            android:visible="false"/>
     </group>
 
     <item android:id="@+id/cominicate"
