@@ -19,13 +19,15 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.UserMenuFactory
+import com.mocan.autoreflex.ui.car.CarFragment
+import com.mocan.autoreflex.ui.car.dummy.DummyContent
 import com.mocan.autoreflex.ui.folder.FolderViewModel
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
 
 
-class MainMenuActivity : AppCompatActivity() {
+class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteractionListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loginViewModel: LoginViewModel
@@ -102,5 +104,8 @@ class MainMenuActivity : AppCompatActivity() {
         startActivity(myIntent)
 
         finish()
+    }
+
+    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
     }
 }

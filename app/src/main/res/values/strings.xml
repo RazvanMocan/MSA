@@ -41,6 +41,5 @@
     <string name="select_type">Select type</string>
     <string name="select_wait">Waiting for data from server</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello my blank fragment</string>
 </resources>
