@@ -2,6 +2,7 @@ package com.mocan.autoreflex.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.UserMenuFactory
+import com.mocan.autoreflex.ui.folder.FolderViewModel
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
@@ -50,13 +52,14 @@ class MainMenuActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
-//        navView.menu.findItem()
-//        var
 
         val bundle: Bundle? = intent.extras
         val message: String? = bundle?.getString("type")
         val factory = UserMenuFactory(message!!)
         val navGraph = factory.selectView(navView)
+
+        Log.e("container", "message was null")
+        ViewModelProviders.of(this).get(FolderViewModel::class.java).setAdmin(message)
 
         appBarConfiguration = AppBarConfiguration(
             navGraph,

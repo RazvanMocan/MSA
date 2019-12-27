@@ -1,6 +1,7 @@
 package com.mocan.autoreflex.ui.folder
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
@@ -9,10 +10,25 @@ import com.google.firebase.database.*
 class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.getInstance().reference) : ViewModel() {
     private val category = "Tasks"
 
+    companion object Admin {
+        var admin = false
+    }
+
+    fun admin(): Boolean {
+        Log.e("admin", admin.toString())
+        return admin
+    }
+
+    fun setAdmin(str: String?) {
+        Log.e("admin", "set")
+        admin = str != "scoala"
+        Log.e("admin", admin.toString())
+
+    }
+
     fun getTasks(): Task<List<String>> {
         val listener = TaskCompletionSource<List<String>>()
 
-        Log.e("eroare aici", "aici")
         val taskList = ArrayList<String>()
 
         val ref = database.child(category)
@@ -24,7 +40,6 @@ class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                Log.e("eroare aici", p0.hasChildren().toString())
                 for (task in p0.children) {
                     taskList.add(task.value.toString())
                 }
@@ -32,7 +47,6 @@ class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.
                 listener.setResult(taskList)
             }
         })
-        Log.w("eroare aici", taskList.toString())
 
         return listener.task
     }
