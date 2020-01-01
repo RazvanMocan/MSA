@@ -107,5 +107,6 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
     }
 
     override fun onListFragmentInteraction(item: DummyContent.CarItem?) {
+        Log.e("interact", "view pressed")
     }
 }

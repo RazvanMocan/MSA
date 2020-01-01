@@ -40,13 +40,10 @@ object DummyContent {
 
             override fun onDataChange(p0: DataSnapshot) {
                 var i = 1
-                Log.e("cars", p0.childrenCount.toString())
                 for (child in p0.children) {
                     val car = child.getValue(CarItem::class.java)
-                    Log.e("car", car.toString())
                     car?.id = child.key!!
                     car?.index = i.toString()
-                    Log.e("car", car.toString())
                     addItem(car!!)
                     i++
                 }
