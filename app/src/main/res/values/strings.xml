@@ -42,4 +42,8 @@
     <string name="select_wait">Waiting for data from server</string>
 
     <string name="hello_blank_fragment">Hello my blank fragment</string>
+
+    <string name="car_update">Update</string>
+    <string name="car_itp">ITP</string>
+    <string name="car_insurance">Insurance</string>
 </resources>
