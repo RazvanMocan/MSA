@@ -80,7 +80,7 @@ class MyCarRecyclerViewAdapter(
 
     private fun datePicker(v: View?) {
         val curDay = calendar.get(Calendar.DAY_OF_MONTH)
-        val curMonth = calendar.get(Calendar.MONTH) + 1
+        val curMonth = calendar.get(Calendar.MONTH)
         val curYear = calendar.get(Calendar.YEAR)
 
         val dialog = DatePickerDialog(
@@ -88,7 +88,7 @@ class MyCarRecyclerViewAdapter(
             android.R.style.Theme_Material_Dialog_MinWidth,
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 (v as EditText).editableText.clear()
-                v.editableText.insert(0, "$dayOfMonth/$month/$year")
+                v.editableText.insert(0, "$dayOfMonth/${month.inc()}/$year")
             },
             curYear, curMonth, curDay
         )
