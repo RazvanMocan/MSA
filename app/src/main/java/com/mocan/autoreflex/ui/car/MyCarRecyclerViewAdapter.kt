@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.TaskCompletionSource
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.car.CarFragment.OnListFragmentInteractionListener
 import com.mocan.autoreflex.ui.car.dummy.DummyContent.CarItem
@@ -32,6 +36,7 @@ class MyCarRecyclerViewAdapter(
     private val opposite = mapOf(View.GONE to View.VISIBLE, View.VISIBLE to View.GONE)
     private val calendar: Calendar
     private lateinit var myContext: Context
+    private var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -57,17 +62,27 @@ class MyCarRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
 //        Log.w("id elem", holder.mIdView)
-        holder.mIdView.text = item.index
+        holder.mIdView.text = position.toString()
         holder.mContentView.text = item.id
         holder.mExpandableView.car_itp.text.insert(0, item.itp)
         holder.mExpandableView.car_insurance.text.insert(0, item.insurance)
 
         holder.mExpandableView.car_itp.setOnClickListener { v ->
-            datePicker(v)
+            val task = datePicker(v)
+            task.task.addOnSuccessListener { s ->
+                item.itp = s
+            }
         }
 
         holder.mExpandableView.car_insurance.setOnClickListener { v ->
-            datePicker(v)
+            val task = datePicker(v)
+            task.task.addOnSuccessListener { s ->
+                item.insurance = s
+            }
+        }
+
+        holder.mExpandableView.car_update.setOnClickListener {
+            database.child("Cars").child(item.id).setValue(item)
         }
 
         with(holder.mView) {
@@ -78,23 +93,28 @@ class MyCarRecyclerViewAdapter(
         }
     }
 
-    private fun datePicker(v: View?) {
+    private fun datePicker(v: View?): TaskCompletionSource<String> {
         val curDay = calendar.get(Calendar.DAY_OF_MONTH)
         val curMonth = calendar.get(Calendar.MONTH)
         val curYear = calendar.get(Calendar.YEAR)
+        val task = TaskCompletionSource<String>()
+
 
         val dialog = DatePickerDialog(
             myContext,
             android.R.style.Theme_Material_Dialog_MinWidth,
             DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 (v as EditText).editableText.clear()
-                v.editableText.insert(0, "$dayOfMonth/${month.inc()}/$year")
+                val date = "$dayOfMonth/${month.inc()}/$year"
+                v.editableText.insert(0, date)
+                task.setResult(date)
             },
             curYear, curMonth, curDay
         )
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
+        return task
     }
 
     override fun getItemCount(): Int = mValues.size

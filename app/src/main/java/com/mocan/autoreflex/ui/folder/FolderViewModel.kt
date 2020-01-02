@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.database.*
+import com.mocan.autoreflex.ui.car.dummy.DummyContent
 
 
 class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.getInstance().reference) : ViewModel() {
@@ -59,5 +60,9 @@ class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.
         users[key.toString()] = task
 
         database.child(category).updateChildren(users as Map<String, Any>)
+    }
+
+    fun addCar(child: String, value:DummyContent.CarItem) {
+        database.child("Cars").child(child).setValue(value)
     }
 }

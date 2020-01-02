@@ -23,11 +23,8 @@ object DummyContent {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    val ITEM_MAP: MutableMap<String, CarItem> = HashMap()
+    private val ITEM_MAP: MutableMap<String, CarItem> = HashMap()
 
-
-
-    private val COUNT = 25
 
     init {
         val database = FirebaseDatabase.getInstance().reference
@@ -43,7 +40,6 @@ object DummyContent {
                 for (child in p0.children) {
                     val car = child.getValue(CarItem::class.java)
                     car?.id = child.key!!
-                    car?.index = i.toString()
                     addItem(car!!)
                     i++
                 }
@@ -63,8 +59,10 @@ object DummyContent {
      * A data item representing car's documents.
      */
     @IgnoreExtraProperties
-    data class CarItem(var id:String = "", var index: String = "", var itp: String = "",
+    data class CarItem(var itp: String = "",
                        var insurance: String = "") {
+        var id:String = ""
+
         override fun toString(): String {
             return id
         }

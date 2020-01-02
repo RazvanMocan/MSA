@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="@string/car_itp"/>
+                android:text="@string/car_insurance"/>
 
             <EditText
                 android:id="@+id/car_insurance"
@@ -88,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/car_update"
+            android:id="@+id/car_update"
             />
 
 
