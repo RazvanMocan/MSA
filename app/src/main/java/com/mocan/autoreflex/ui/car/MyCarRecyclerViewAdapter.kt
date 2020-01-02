@@ -29,14 +29,14 @@ class MyCarRecyclerViewAdapter(
 ) : RecyclerView.Adapter<MyCarRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    private val oposite = mapOf<Int, Int>(View.GONE to View.VISIBLE, View.VISIBLE to View.GONE)
+    private val opposite = mapOf(View.GONE to View.VISIBLE, View.VISIBLE to View.GONE)
     private val calendar: Calendar
     private lateinit var myContext: Context
 
     init {
         mOnClickListener = View.OnClickListener { v ->
             val details = (v as LinearLayout).getChildAt(1)
-            details.visibility = oposite.getValue(details.visibility)
+            details.visibility = opposite.getValue(details.visibility)
             val item = v.tag as CarItem
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
@@ -86,7 +86,7 @@ class MyCarRecyclerViewAdapter(
         val dialog = DatePickerDialog(
             myContext,
             android.R.style.Theme_Material_Dialog_MinWidth,
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 (v as EditText).editableText.clear()
                 v.editableText.insert(0, "$dayOfMonth/${month.inc()}/$year")
             },
