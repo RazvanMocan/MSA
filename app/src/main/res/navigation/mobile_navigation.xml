@@ -53,4 +53,10 @@
         android:name="com.mocan.autoreflex.ui.car.CarFragment"
         android:label="@string/car_list"
         tools:layout="@layout/fragment_car"/>
+
+    <fragment
+        android:id="@+id/instructor_fragment"
+        android:name="com.mocan.autoreflex.ui.instructor.instructorFragment"
+        android:label="@string/instructor_list"
+        tools:layout="@layout/fragment_instructor"/>
 </navigation>

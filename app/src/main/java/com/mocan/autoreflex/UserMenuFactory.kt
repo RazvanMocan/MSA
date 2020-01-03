@@ -10,12 +10,14 @@ class UserMenuFactory(private var type: String) {
             navView.menu.findItem(R.id.nav_gallery).isVisible = true
             navView.menu.findItem(R.id.nav_tasks).isVisible = true
             navView.menu.findItem(R.id.car_fragment).isVisible = true
+            navView.menu.findItem(R.id.instructor_fragment).isVisible = true
 
             return setOf(
                 R.id.nav_home,
                 R.id.nav_gallery,
                 R.id.nav_tasks,
-                R.id.car_fragment
+                R.id.car_fragment,
+                R.id.instructor_fragment
             )
         } else {
             navView.menu.findItem(R.id.nav_home).isVisible = true

@@ -31,6 +31,7 @@
     <string name="forgot_password">Forgot password</string>
     <string name="document_list">Documents list</string>
     <string name="car_list">Car list</string>
+    <string name="instructor_list">Instructor list</string>
 
     <string name="user_creation">Create account</string>
     <string name="id_gathering">We need your id</string>
@@ -46,4 +47,11 @@
     <string name="car_update">Update</string>
     <string name="car_itp">ITP</string>
     <string name="car_insurance">Insurance</string>
+
+    <string name="instructor_atestat">Atestat</string>
+    <string name="instructor_buletin">Buletin</string>
+    <string name="instructor_permis">Permis</string>
+    <string name="instructor_medical">Asigurare Medicala</string>
+    <string name="instructor_cazier">Cazier</string>
+    <string name="communicate">Communicate</string>
 </resources>
