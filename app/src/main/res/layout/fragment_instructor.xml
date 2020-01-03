@@ -31,7 +31,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/expandView"
+        android:id="@+id/expandViewInstr"
         android:visibility="gone"
         android:orientation="vertical"
         android:layout_marginStart="24dp">
@@ -162,7 +162,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/car_update"
-            android:id="@+id/car_update"
+            android:id="@+id/instructor_update"
             android:layout_gravity="center_horizontal"
             />
 

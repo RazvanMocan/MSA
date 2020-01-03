@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.mocan.autoreflex.R
 
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent
-import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.DummyItem
+import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.InstructorItem
 
 /**
  * A fragment representing a list of Items.
@@ -47,7 +48,9 @@ class instructorFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyinstructorRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                DummyContent.ITEMS.observeForever { t ->
+                    adapter = MyinstructorRecyclerViewAdapter(t, listener)
+                }
             }
         }
         return view
@@ -81,7 +84,7 @@ class instructorFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: InstructorItem?)
     }
 
     companion object {

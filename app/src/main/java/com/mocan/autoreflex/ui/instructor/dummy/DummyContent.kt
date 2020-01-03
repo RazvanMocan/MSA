@@ -1,6 +1,8 @@
 package com.mocan.autoreflex.ui.instructor.dummy
 
-import java.util.ArrayList
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.*
 import java.util.HashMap
 
 /**
@@ -14,44 +16,42 @@ object DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    val ITEMS: MutableList<DummyItem> = ArrayList()
+
+    var ITEMS = MutableLiveData<Map<String, InstructorItem>>()
+
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
+    private val ITEM_MAP: MutableMap<String, InstructorItem> = HashMap()
 
-    private val COUNT = 25
 
     init {
-        // Add some sample items.
-        for (i in 1..COUNT) {
-            addItem(createDummyItem(i))
-        }
+        val database = FirebaseDatabase.getInstance().reference
+
+        database.child("Instructors").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                Log.e("DummyContent", "cancelled")
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                ITEM_MAP.clear()
+                Log.w("size", p0.childrenCount.toString())
+                for (child in p0.children) {
+                    val car = child.getValue(InstructorItem::class.java)
+                    ITEM_MAP[child.key!!] = car!!
+                }
+                ITEMS.value = ITEM_MAP
+            }
+        })
     }
 
-    private fun addItem(item: DummyItem) {
-        ITEMS.add(item)
-        ITEM_MAP.put(item.id, item)
-    }
-
-    private fun createDummyItem(position: Int): DummyItem {
-        return DummyItem(position.toString(), "Item " + position, makeDetails(position))
-    }
-
-    private fun makeDetails(position: Int): String {
-        val builder = StringBuilder()
-        builder.append("Details about Item: ").append(position)
-        for (i in 0..position - 1) {
-            builder.append("\nMore details information here.")
-        }
-        return builder.toString()
-    }
 
     /**
      * A dummy item representing a piece of content.
      */
-    data class DummyItem(val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
-    }
+    @IgnoreExtraProperties
+    data class InstructorItem(
+        var atestat: String = "", var buletin: String = "", var permis: String = "",
+        var asig: String = "", var cazier: String = "")
 }

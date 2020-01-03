@@ -35,13 +35,11 @@ object DummyContent {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                var i = 1
                 items.clear()
                 for (child in p0.children) {
                     val car = child.getValue(CarItem::class.java)
                     car?.id = child.key!!
                     addItem(car!!)
-                    i++
                 }
                 ITEMS.value = items
             }
