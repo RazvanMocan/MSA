@@ -33,7 +33,7 @@
         <item
             android:id="@+id/car_fragment"
             android:icon="@drawable/ic_menu_car"
-            android:title="@string/document_list"
+            android:title="@string/car_list"
             android:visible="false"/>
 
         <item
