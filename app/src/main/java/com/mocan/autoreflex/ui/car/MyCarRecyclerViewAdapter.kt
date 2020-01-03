@@ -62,7 +62,7 @@ class MyCarRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
 //        Log.w("id elem", holder.mIdView)
-        holder.mIdView.text = position.toString()
+        holder.mIdView.text = position.inc().toString()
         holder.mContentView.text = item.id
         holder.mExpandableView.car_itp.text.insert(0, item.itp)
         holder.mExpandableView.car_insurance.text.insert(0, item.insurance)
