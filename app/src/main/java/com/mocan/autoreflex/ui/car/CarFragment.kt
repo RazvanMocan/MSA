@@ -49,9 +49,10 @@ class CarFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                DummyContent.ITEMS.task.addOnSuccessListener { list ->
-                    adapter = MyCarRecyclerViewAdapter(list, listener)
+                DummyContent.ITEMS.observeForever { t ->
+                    adapter = MyCarRecyclerViewAdapter(t, listener)
                 }
+
             }
         }
 
@@ -65,7 +66,7 @@ class CarFragment : Fragment() {
         if (context is OnListFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
         }
     }
 

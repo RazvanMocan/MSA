@@ -1,7 +1,7 @@
 package com.mocan.autoreflex.ui.car.dummy
 
 import android.util.Log
-import com.google.android.gms.tasks.TaskCompletionSource
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -18,7 +18,7 @@ object DummyContent {
      */
     private val items: MutableList<CarItem> = ArrayList()
 
-    var ITEMS = TaskCompletionSource<List<CarItem>>()
+    var ITEMS = MutableLiveData<List<CarItem>>()
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -29,21 +29,21 @@ object DummyContent {
     init {
         val database = FirebaseDatabase.getInstance().reference
 
-        database.child("Cars").addListenerForSingleValueEvent(object :ValueEventListener{
+        database.child("Cars").addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-                ITEMS.setException(p0.toException())
                 Log.e("DummyContent", "cancelled")
             }
 
             override fun onDataChange(p0: DataSnapshot) {
                 var i = 1
+                items.clear()
                 for (child in p0.children) {
                     val car = child.getValue(CarItem::class.java)
                     car?.id = child.key!!
                     addItem(car!!)
                     i++
                 }
-                ITEMS.setResult(items)
+                ITEMS.value = items
             }
         })
     }
