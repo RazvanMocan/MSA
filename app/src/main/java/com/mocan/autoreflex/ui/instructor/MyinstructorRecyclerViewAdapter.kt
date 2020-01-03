@@ -120,7 +120,7 @@ class MyinstructorRecyclerViewAdapter(
         }
 
         holder.mExpandableView.instructor_update.setOnClickListener {
-            database.child("Cars").child(keyList[position]).setValue(item)
+            database.child("Instructors").child(keyList[position]).setValue(item)
         }
 
         with(holder.mView) {
