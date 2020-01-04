@@ -1,6 +1,8 @@
 package com.mocan.autoreflex.ui.home
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +25,10 @@ class HomeFragment : Fragment() {
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(this, Observer {
-            textView.text = it
+
+        homeViewModel.getData().observe(this, Observer {
+            Log.w("plm", it.toString())
+            textView.text = it.toString()
         })
         return root
     }

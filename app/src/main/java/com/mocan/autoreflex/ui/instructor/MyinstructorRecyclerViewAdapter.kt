@@ -68,7 +68,6 @@ class MyinstructorRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.w("size", mValues.size.toString())
         val item = mValues.getValue(keyList[position])
         holder.mIdView.text = position.inc().toString()
         holder.mContentView.text = keyList[position]

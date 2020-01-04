@@ -36,7 +36,6 @@ object DummyContent {
 
             override fun onDataChange(p0: DataSnapshot) {
                 ITEM_MAP.clear()
-                Log.w("size", p0.childrenCount.toString())
                 for (child in p0.children) {
                     val car = child.getValue(InstructorItem::class.java)
                     ITEM_MAP[child.key!!] = car!!

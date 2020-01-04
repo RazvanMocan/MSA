@@ -29,6 +29,7 @@ object DummyContent {
     init {
         val database = FirebaseDatabase.getInstance().reference
 
+
         database.child("Cars").addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 Log.e("DummyContent", "cancelled")

@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
+import com.mocan.autoreflex.ui.home.HomeViewModel
 
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.InstructorItem
@@ -26,6 +28,7 @@ class instructorFragment : Fragment() {
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,9 @@ class instructorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_instructor_list, container, false)
+        homeViewModel =
+            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -50,6 +56,7 @@ class instructorFragment : Fragment() {
                 }
                 DummyContent.ITEMS.observeForever { t ->
                     adapter = MyinstructorRecyclerViewAdapter(t, listener)
+                    homeViewModel.lateInstructor(t)
                 }
             }
         }

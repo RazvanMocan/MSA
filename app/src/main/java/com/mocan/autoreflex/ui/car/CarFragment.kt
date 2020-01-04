@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
 
 import com.mocan.autoreflex.ui.car.dummy.DummyContent
 import com.mocan.autoreflex.ui.car.dummy.DummyContent.CarItem
+import com.mocan.autoreflex.ui.home.HomeViewModel
 
 /**
  * A fragment representing a list of Items.
@@ -25,6 +27,7 @@ class CarFragment : Fragment() {
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,8 @@ class CarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_car_list, container, false)
+        homeViewModel =
+            ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -51,6 +56,7 @@ class CarFragment : Fragment() {
                 }
                 DummyContent.ITEMS.observeForever { t ->
                     adapter = MyCarRecyclerViewAdapter(t, listener)
+                    homeViewModel.lateCar(t)
                 }
 
             }
