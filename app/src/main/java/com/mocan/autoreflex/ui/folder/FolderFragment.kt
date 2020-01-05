@@ -82,7 +82,6 @@ class FolderFragment : Fragment() {
 
         if (viewModel.admin())
             taskButton.visibility = View.VISIBLE
-        Log.e("admin", viewModel.admin().toString())
 
         val task = viewModel.getTasks()
 

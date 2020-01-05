@@ -17,15 +17,11 @@ class FolderViewModel(private var database:DatabaseReference = FirebaseDatabase.
     }
 
     fun admin(): Boolean {
-        Log.e("admin", admin.toString())
         return admin
     }
 
     fun setAdmin(str: String?) {
-        Log.e("admin", "set")
         admin = str != "scoala"
-        Log.e("admin", admin.toString())
-
     }
 
     fun getTasks(): Task<List<String>> {
