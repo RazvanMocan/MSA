@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
+import com.google.firebase.auth.UserProfileChangeRequest
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -63,8 +64,14 @@ class LoginRepository(val dataSource: LoginDataSource) {
         createTask.addOnCompleteListener{task ->
             if (task.isSuccessful) {
                 val user = dataSource.getUser()
-                if (user != null)
+                if (user != null) {
                     setFirebaseUser(user)
+                    val name = username.substring(0, username.indexOf('@'))
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+                    user.updateProfile(profileUpdates)
+                }
             }
         }
         return createTask
