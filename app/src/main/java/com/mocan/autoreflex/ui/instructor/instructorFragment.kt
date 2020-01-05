@@ -56,7 +56,6 @@ class instructorFragment : Fragment() {
                 }
                 DummyContent.ITEMS.observeForever { t ->
                     adapter = MyinstructorRecyclerViewAdapter(t, listener)
-                    homeViewModel.lateInstructor(t)
                 }
             }
         }

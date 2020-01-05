@@ -56,7 +56,6 @@ class CarFragment : Fragment() {
                 }
                 DummyContent.ITEMS.observeForever { t ->
                     adapter = MyCarRecyclerViewAdapter(t, listener)
-                    homeViewModel.lateCar(t)
                 }
 
             }
