@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -39,6 +40,7 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
@@ -57,6 +59,9 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
         val bundle: Bundle? = intent.extras
         val message: String? = bundle?.getString("type")
+        if (message != "scoala") {
+            navController.navigate(R.id.nav_tasks)
+        }
         val factory = UserMenuFactory(message!!)
         val navGraph = factory.selectView(navView)
 
