@@ -1,27 +1,35 @@
 package com.mocan.autoreflex.ui.login
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import android.graphics.Color
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import android.widget.LinearLayout
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseUser
-
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.main.MainMenuActivity
 import com.mocan.autoreflex.ui.signup.SignUpActivity
 
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +40,10 @@ class LoginActivity : AppCompatActivity() {
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
         val signUp = findViewById<TextView>(R.id.textView2)
         val resetPassword = findViewById<TextView>(R.id.forgot_password)
+
+        setProgressDialog()
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -56,17 +65,18 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
+            dialog.dismiss()
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
 
-            //Complete and destroy login activity once successful
-            finish()
+                setResult(Activity.RESULT_OK)
+
+                //Complete and destroy login activity once successful
+                finish()
+            }
         })
 
         username.afterTextChanged {
@@ -86,17 +96,21 @@ class LoginActivity : AppCompatActivity() {
 
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
+                    EditorInfo.IME_ACTION_DONE -> {
+
+                        dialog.show()
                         loginViewModel.login(
                             username.text.toString(),
                             password.text.toString()
                         )
+                    }
+
                 }
                 false
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
+                dialog.show()
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
@@ -118,10 +132,52 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    fun setProgressDialog() {
+        val llPadding = 30
+        val ll = LinearLayout(this)
+        ll.orientation = LinearLayout.HORIZONTAL
+        ll.setPadding(llPadding, llPadding, llPadding, llPadding)
+        ll.gravity = Gravity.CENTER
+        var llParam = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        llParam.gravity = Gravity.CENTER
+        ll.layoutParams = llParam
+        val progressBar = ProgressBar(this)
+        progressBar.isIndeterminate = true
+        progressBar.setPadding(0, 0, llPadding, 0)
+        progressBar.layoutParams = llParam
+        llParam = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        llParam.gravity = Gravity.CENTER
+        val tvText = TextView(this)
+        tvText.text = getString(R.string.loading)
+        tvText.setTextColor(Color.parseColor("#000000"))
+        tvText.textSize = 20f
+        tvText.layoutParams = llParam
+        ll.addView(progressBar)
+        ll.addView(tvText)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setCancelable(true)
+        builder.setView(ll)
+
+        dialog = builder.create()
+        val window = dialog.window
+        if (window != null) {
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(dialog.window!!.attributes)
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+            dialog.window!!.attributes = layoutParams
+        }
+    }
+
     private fun alreadyLogged() {
         val loggedUser = loginViewModel.alreadyLogged()
-        Toast.makeText(applicationContext, "User: " + loggedUser.toString(), Toast.LENGTH_LONG)
-            .show()
         if (loggedUser != null) {
             updateUiWithUser(loggedUser)
         }
@@ -153,6 +209,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUiWithUser(model: FirebaseUser) {
+        dialog.show()
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
 
@@ -160,6 +217,7 @@ class LoginActivity : AppCompatActivity() {
 
         activity.addOnSuccessListener { result ->
             Log.e("type ", result.claims["type"].toString())
+            dialog.dismiss()
             changeActivity(
                 MainMenuActivity::class.java,
                 welcome,

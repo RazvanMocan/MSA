@@ -54,4 +54,5 @@
     <string name="instructor_medical">Asigurare Medicala</string>
     <string name="instructor_cazier">Cazier</string>
     <string name="communicate">Communicate</string>
+    <string name="loading">Loading ...</string>
 </resources>
