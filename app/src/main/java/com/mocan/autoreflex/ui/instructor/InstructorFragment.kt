@@ -2,7 +2,6 @@ package com.mocan.autoreflex.ui.instructor
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,12 +14,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
 import androidx.core.view.get
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.mocan.autoreflex.R
-import com.mocan.autoreflex.ui.home.HomeViewModel
 
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.InstructorItem
@@ -28,9 +24,9 @@ import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.InstructorItem
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [instructorFragment.OnListFragmentInteractionListener] interface.
+ * [InstructorFragment.OnListFragmentInteractionListener] interface.
  */
-class instructorFragment : Fragment() {
+class InstructorFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -84,16 +80,16 @@ class instructorFragment : Fragment() {
         val input = EditText(context)
         alert.setView(input)
 
-        alert.setPositiveButton("Ok",
-            DialogInterface.OnClickListener { dialog, whichButton ->
-                val instr = input.text.toString()
-                database.child("Instructors").child(instr).setValue(DummyContent.InstructorItem())
-            })
+        alert.setPositiveButton("Ok"
+        ) { _, _ ->
+            val instr = input.text.toString()
+            database.child("Instructors").child(instr).setValue(InstructorItem())
+        }
 
-        alert.setNegativeButton("Cancel",
-            DialogInterface.OnClickListener { dialog, whichButton ->
-                // Canceled.
-            })
+        alert.setNegativeButton("Cancel"
+        ) { _, _ ->
+            // Canceled.
+        }
 
         alert.show()
     }
@@ -137,7 +133,7 @@ class instructorFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            instructorFragment().apply {
+            InstructorFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

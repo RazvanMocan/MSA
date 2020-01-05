@@ -14,7 +14,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.instructor.instructorFragment"
+        tools:context=".ui.instructor.InstructorFragment"
         tools:listitem="@layout/fragment_instructor"
         android:layout_above="@+id/add_instr"/>
 

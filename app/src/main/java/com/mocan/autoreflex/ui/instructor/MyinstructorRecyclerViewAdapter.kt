@@ -1,9 +1,7 @@
 package com.mocan.autoreflex.ui.instructor
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -16,10 +14,9 @@ import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.mocan.autoreflex.R
-import com.mocan.autoreflex.ui.instructor.dummy.DummyContent
 
 
-import com.mocan.autoreflex.ui.instructor.instructorFragment.OnListFragmentInteractionListener
+import com.mocan.autoreflex.ui.instructor.InstructorFragment.OnListFragmentInteractionListener
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.InstructorItem
 
 import kotlinx.android.synthetic.main.fragment_instructor.view.*

@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/instructor_fragment"
-        android:name="com.mocan.autoreflex.ui.instructor.instructorFragment"
+        android:name="com.mocan.autoreflex.ui.instructor.InstructorFragment"
         android:label="@string/instructor_list"
         tools:layout="@layout/fragment_instructor"/>
 </navigation>
