@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -22,19 +22,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_toEndOf="@+id/item_number"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageButton
+            android:id="@+id/delete_instr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/delete_item"
+            android:src="@drawable/delete_24dp" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
+        android:id="@+id/expandViewInstr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/expandViewInstr"
-        android:visibility="gone"
+        android:layout_marginStart="24dp"
         android:orientation="vertical"
-        android:layout_marginStart="24dp">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,19 +54,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="@string/instructor_atestat"/>
+                android:text="@string/instructor_atestat"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <EditText
                 android:id="@+id/instructor_atestat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:focusable="false"
-                android:inputType="date"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
@@ -68,19 +78,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="@string/instructor_buletin"/>
+                android:text="@string/instructor_buletin"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <EditText
                 android:id="@+id/instructor_buletin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:focusable="false"
-                android:inputType="date"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
@@ -93,19 +103,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="@string/instructor_permis"/>
+                android:text="@string/instructor_permis"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <EditText
                 android:id="@+id/instructor_permis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:focusable="false"
-                android:inputType="date"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
@@ -117,19 +127,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="@string/instructor_medical"/>
+                android:text="@string/instructor_medical"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <EditText
                 android:id="@+id/instructor_medical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:focusable="false"
-                android:inputType="date"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
@@ -141,31 +151,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="@string/instructor_cazier"/>
+                android:text="@string/instructor_cazier"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
             <EditText
                 android:id="@+id/instructor_cazier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:inputType="date"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:focusable="false"
-                android:inputType="date"
-                android:importantForAutofill="no"
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
 
         <Button
+            android:id="@+id/instructor_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/car_update"
-            android:id="@+id/instructor_update"
             android:layout_gravity="center_horizontal"
-            />
+            android:text="@string/car_update" />
 
 
     </LinearLayout>
+
 </LinearLayout>

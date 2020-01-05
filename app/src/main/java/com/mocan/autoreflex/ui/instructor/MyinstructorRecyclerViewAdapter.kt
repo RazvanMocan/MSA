@@ -1,7 +1,9 @@
 package com.mocan.autoreflex.ui.instructor
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -9,18 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.mocan.autoreflex.R
+import com.mocan.autoreflex.ui.instructor.dummy.DummyContent
 
 
 import com.mocan.autoreflex.ui.instructor.instructorFragment.OnListFragmentInteractionListener
 import com.mocan.autoreflex.ui.instructor.dummy.DummyContent.InstructorItem
-import kotlinx.android.synthetic.main.fragment_car.view.*
 
 import kotlinx.android.synthetic.main.fragment_instructor.view.*
 import kotlinx.android.synthetic.main.fragment_instructor.view.content
@@ -44,6 +44,8 @@ class MyinstructorRecyclerViewAdapter(
     private val calendar: Calendar
     private lateinit var myContext: Context
     private var database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val tab = "Instructors"
+
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -62,12 +64,20 @@ class MyinstructorRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_instructor, parent, false)
+
+
         myContext = parent.context
 
         return ViewHolder(view)
     }
 
+
+
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.e("nu tare", holder.mExpandableView.toString())
+        Log.e("nu tare", mValues.toString())
+
         val item = mValues.getValue(keyList[position])
         holder.mIdView.text = position.inc().toString()
         holder.mContentView.text = keyList[position]
@@ -119,7 +129,11 @@ class MyinstructorRecyclerViewAdapter(
         }
 
         holder.mExpandableView.instructor_update.setOnClickListener {
-            database.child("Instructors").child(keyList[position]).setValue(item)
+            database.child(tab).child(keyList[position]).setValue(item)
+        }
+
+        holder.mDeleteInstr.setOnClickListener {
+            database.child(tab).child(keyList[position]).removeValue()
         }
 
         with(holder.mView) {
@@ -159,6 +173,7 @@ class MyinstructorRecyclerViewAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView = mView.item_number
         val mContentView: TextView = mView.content
+        val mDeleteInstr: ImageButton = mView.delete_instr
         val mExpandableView: LinearLayout = mView.expandViewInstr
 
 

@@ -1,6 +1,8 @@
 package com.mocan.autoreflex.ui.instructor
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -9,8 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RelativeLayout
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.home.HomeViewModel
 
@@ -28,7 +36,8 @@ class instructorFragment : Fragment() {
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
-    private lateinit var homeViewModel: HomeViewModel
+    private var database: DatabaseReference = FirebaseDatabase.getInstance().reference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +52,16 @@ class instructorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_instructor_list, container, false)
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        val recycler = (view as RelativeLayout).get(0)
 
+        val button = view.findViewById<Button>(R.id.add_instr)
+        button.setOnClickListener { v ->
+            showDialog(v.context)
+        }
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
+        if (recycler is RecyclerView) {
+            with(recycler) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
@@ -60,6 +72,30 @@ class instructorFragment : Fragment() {
             }
         }
         return view
+    }
+
+    private fun showDialog(context: Context) {
+        val alert = AlertDialog.Builder(context)
+
+        alert.setTitle("Task")
+        alert.setMessage("Input new task")
+
+        // Set an EditText view to get user input
+        val input = EditText(context)
+        alert.setView(input)
+
+        alert.setPositiveButton("Ok",
+            DialogInterface.OnClickListener { dialog, whichButton ->
+                val instr = input.text.toString()
+                database.child("Instructors").child(instr).setValue(DummyContent.InstructorItem())
+            })
+
+        alert.setNegativeButton("Cancel",
+            DialogInterface.OnClickListener { dialog, whichButton ->
+                // Canceled.
+            })
+
+        alert.show()
     }
 
     override fun onAttach(context: Context) {
