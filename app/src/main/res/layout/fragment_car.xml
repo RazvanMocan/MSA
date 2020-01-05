@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -22,10 +22,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:layout_toRightOf="@id/item_number"
             android:textAppearance="?attr/textAppearanceListItem" />
 
+        <ImageButton
+            android:id="@+id/delete_instr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/delete_item"
+            android:src="@drawable/delete_24dp" />
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 
     <LinearLayout

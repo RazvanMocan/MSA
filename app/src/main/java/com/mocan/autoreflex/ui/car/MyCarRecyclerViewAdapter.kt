@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,10 @@ import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.car.CarFragment.OnListFragmentInteractionListener
 import com.mocan.autoreflex.ui.car.dummy.DummyContent.CarItem
 import kotlinx.android.synthetic.main.fragment_car.view.*
+import kotlinx.android.synthetic.main.fragment_car.view.content
+import kotlinx.android.synthetic.main.fragment_car.view.delete_instr
+import kotlinx.android.synthetic.main.fragment_car.view.item_number
+import kotlinx.android.synthetic.main.fragment_instructor.view.*
 import java.util.*
 
 
@@ -37,6 +42,7 @@ class MyCarRecyclerViewAdapter(
     private val calendar: Calendar
     private lateinit var myContext: Context
     private var database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val tab = "Cars"
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -82,8 +88,13 @@ class MyCarRecyclerViewAdapter(
         }
 
         holder.mExpandableView.car_update.setOnClickListener {
-            database.child("Cars").child(item.id).setValue(item)
+            database.child(tab).child(item.id).setValue(item)
         }
+
+        holder.mDeleteInstr.setOnClickListener {
+            database.child(tab).child(item.id).removeValue()
+        }
+
 
         with(holder.mView) {
             tag = item
@@ -122,6 +133,7 @@ class MyCarRecyclerViewAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView = mView.item_number
         val mContentView: TextView = mView.content
+        val mDeleteInstr: ImageButton = mView.delete_instr
         val mExpandableView: LinearLayout = mView.expandView
 
         override fun toString(): String {
