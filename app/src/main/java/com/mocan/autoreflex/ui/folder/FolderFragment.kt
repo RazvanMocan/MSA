@@ -1,10 +1,10 @@
 package com.mocan.autoreflex.ui.folder
 
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity.LEFT
+import android.view.Gravity.START
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,29 +19,28 @@ import com.mocan.autoreflex.R
 
 class FolderFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = FolderFragment()
-    }
-
-    val checkParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+    private val checkParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
     )
 
     private lateinit var viewModel: FolderViewModel
     private lateinit var taskList: LinearLayout
     private lateinit var taskButton: Button
+    private lateinit var pref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         checkParams.setMargins(10, 10, 10, 10)
-        checkParams.gravity = LEFT
+        checkParams.gravity = START
         val root = inflater.inflate(R.layout.folder_fragment, container, false)
         taskList = root.findViewById(R.id.documentsList)
         taskButton = root.findViewById(R.id.add_task)
         
-        taskButton.setOnClickListener { v -> showDialog() }
+        taskButton.setOnClickListener { showDialog() }
+
+        pref = this.context!!.getSharedPreferences("task", MODE_PRIVATE)
         
         return root
     }
@@ -56,22 +55,22 @@ class FolderFragment : Fragment() {
         val input = EditText(this.context)
         alert.setView(input)
 
-        alert.setPositiveButton("Ok",
-            DialogInterface.OnClickListener { dialog, whichButton ->
-                val task = input.text.toString()
-                viewModel.addTask(task)
+        alert.setPositiveButton("Ok"
+        ) { _, _ ->
+            val task = input.text.toString()
+            viewModel.addTask(task)
 
-                val check = CheckBox(this.context)
-                check.text = task
-                taskList.addView(check, checkParams)
+            val check = CheckBox(this.context)
+            check.text = task
+            taskList.addView(check, checkParams)
 
-                // Do something with value!
-            })
+            // Do something with value!
+        }
 
-        alert.setNegativeButton("Cancel",
-            DialogInterface.OnClickListener { dialog, whichButton ->
-                // Canceled.
-            })
+        alert.setNegativeButton("Cancel"
+        ) { _, _ ->
+            // Canceled.
+        }
 
         alert.show()
     }
@@ -90,6 +89,14 @@ class FolderFragment : Fragment() {
             for (document in list) {
                 val check = CheckBox(this.context)
                 check.text = document
+                check.isChecked = pref.getBoolean(document, false)
+                check.setOnClickListener { v ->
+                    val editor = pref.edit()
+                    v as CheckBox
+                    editor.putBoolean(v.text.toString(), v.isChecked)
+                    editor.apply()
+                }
+
                 taskList.addView(check, checkParams)
             }
         }
