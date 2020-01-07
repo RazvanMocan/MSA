@@ -27,7 +27,7 @@ class GalleryFragment : Fragment() {
     private lateinit var galleryViewModel: GalleryViewModel
     private var url:String = "https://www.drpciv.ro/dlexam"
     private lateinit var browser: WebView
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+//    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -38,22 +38,22 @@ class GalleryFragment : Fragment() {
     ): View? {
         galleryViewModel =
             ViewModelProviders.of(this).get(GalleryViewModel::class.java)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
 
         val root = inflater.inflate(R.layout.fragment_gallery, container, false)
 
         browser = root.findViewById(R.id.examView)
 
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                Log.e("location", location!!.longitude.toString())
-                Log.e("location", location!!.latitude.toString())
-
-                val loc = Location("")
-                loc.latitude = 45.745307
-                loc.longitude = 21.226159
-                Log.e("loc", location.distanceTo(loc).toString())
-            }
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener { location : Location? ->
+//                Log.e("location", location!!.longitude.toString())
+//                Log.e("location", location!!.latitude.toString())
+//
+//                val loc = Location("")
+//                loc.latitude = 45.745307
+//                loc.longitude = 21.226159
+//                Log.e("loc", location.distanceTo(loc).toString())
+//            }
 
         // Load the webpage if not loaded before
         if (savedInstanceState == null) {
