@@ -16,7 +16,6 @@ class UserMenuFactory(private var type: String) {
         } else {
             navView.menu.findItem(R.id.nav_home).isVisible = true
             navView.menu.findItem(R.id.nav_send).isVisible = true
-            navView.menu.findItem(R.id.documentsList).isVisible = true
             navView.menu.findItem(R.id.nav_tasks).isVisible = true
             navView.menu.findItem(R.id.car_fragment).isVisible = true
             navView.menu.findItem(R.id.instructor_fragment).isVisible = true

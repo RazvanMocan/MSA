@@ -1,25 +1,18 @@
 package com.mocan.autoreflex.ui.gallery
 
 import android.annotation.SuppressLint
-import android.location.Location
 import android.os.Bundle
-import android.provider.Browser
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.ValueCallback
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.mocan.autoreflex.R
 import android.webkit.WebViewClient
 import android.webkit.WebChromeClient
-import android.widget.Toast
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.mocan.autoreflex.ui.main.MainMenuActivity
-import java.time.Duration
 
 
 class GalleryFragment : Fragment() {
@@ -43,6 +36,19 @@ class GalleryFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_gallery, container, false)
 
         browser = root.findViewById(R.id.examView)
+        browser.evaluateJavascript("var waitForEl = function(selector, callback) {\n" +
+                "  if (jQuery(selector).length) {\n" +
+                "    callback();\n" +
+                "  } else {\n" +
+                "    setTimeout(function() {\n" +
+                "      waitForEl(selector, callback);\n" +
+                "    }, 100);\n" +
+                "  }\n" +
+                "};\n" +
+                "\n" +
+                "waitForEl(selector, function() {\n" +
+                "  " +
+                "});", ValueCallback { value -> Log.e("kkkk", value)  })
 
 //        fusedLocationClient.lastLocation
 //            .addOnSuccessListener { location : Location? ->
