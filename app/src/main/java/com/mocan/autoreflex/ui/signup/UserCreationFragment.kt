@@ -20,6 +20,8 @@ import android.app.Activity
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat.getSystemService
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.Observer
+import com.mocan.autoreflex.ui.login.afterTextChanged
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -69,8 +71,38 @@ class UserCreationFragment : Fragment() {
         val username = root.findViewById<EditText>(R.id.username_create)
         val password = root.findViewById<EditText>(R.id.password_create)
         val loading = root.findViewById<ProgressBar>(R.id.create_loading)
+        val signUp = root.findViewById<Button>(R.id.button)
 
-        root.findViewById<Button>(R.id.button).setOnClickListener { v ->
+        username.afterTextChanged {
+            loginViewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        }
+
+        password.apply{
+            afterTextChanged {
+            loginViewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        }}
+
+        loginViewModel.loginFormState.observe(this@UserCreationFragment, Observer {
+            val loginState = it ?: return@Observer
+
+            // disable login button unless both username / password is valid
+            signUp.isEnabled = loginState.isDataValid
+
+            if (loginState.usernameError != null) {
+                username.error = getString(loginState.usernameError)
+            }
+            if (loginState.passwordError != null) {
+                password.error = getString(loginState.passwordError)
+            }
+        })
+
+        signUp.setOnClickListener {
             loading.visibility = View.VISIBLE
 
             password.onEditorAction(EditorInfo.IME_ACTION_DONE)

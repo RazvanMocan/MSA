@@ -132,7 +132,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun setProgressDialog() {
+    private fun setProgressDialog() {
         val llPadding = 30
         val ll = LinearLayout(this)
         ll.orientation = LinearLayout.HORIZONTAL
