@@ -2,8 +2,7 @@ package com.mocan.autoreflex.ui.signup
 
 import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
@@ -29,17 +28,11 @@ class SignUpActivity : AppCompatActivity(),
 
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
 
         loginViewModel = ViewModelProviders.of(this,
             LoginViewModelFactory()
         )
             .get(LoginViewModel::class.java)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
     override fun onFragmentInteraction(int: Int) {
