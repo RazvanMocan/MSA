@@ -91,11 +91,8 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
         val user = loginViewModel.alreadyLogged()
 
-        if (user != null) {
-            findViewById<TextView>(R.id.textView).text = user.email
-            findViewById<TextView>(R.id.displayName).text = user.displayName
-        }
-
+        findViewById<TextView>(R.id.textView).text = user?.email ?: ""
+        findViewById<TextView>(R.id.displayName).text = user?.displayName ?: ""
 
         return true
     }
