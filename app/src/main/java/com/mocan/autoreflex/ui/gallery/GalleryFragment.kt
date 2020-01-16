@@ -2,11 +2,9 @@ package com.mocan.autoreflex.ui.gallery
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.ValueCallback
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -36,19 +34,6 @@ class GalleryFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_gallery, container, false)
 
         browser = root.findViewById(R.id.examView)
-        browser.evaluateJavascript("var waitForEl = function(selector, callback) {\n" +
-                "  if (jQuery(selector).length) {\n" +
-                "    callback();\n" +
-                "  } else {\n" +
-                "    setTimeout(function() {\n" +
-                "      waitForEl(selector, callback);\n" +
-                "    }, 100);\n" +
-                "  }\n" +
-                "};\n" +
-                "\n" +
-                "waitForEl(selector, function() {\n" +
-                "  " +
-                "});", ValueCallback { value -> Log.e("kkkk", value)  })
 
 //        fusedLocationClient.lastLocation
 //            .addOnSuccessListener { location : Location? ->

@@ -2,8 +2,6 @@ package com.mocan.autoreflex.ui.signup
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -71,9 +69,9 @@ class SchoolSelectionFragment : Fragment() {
         select.isEnabled = false
         getOptions()
 
-        select.setOnClickListener { v -> showOptions() }
+        select.setOnClickListener { showOptions() }
 
-        type.setOnClickListener { v -> showTypes() }
+        type.setOnClickListener { showTypes() }
 
         return root
     }
@@ -123,7 +121,7 @@ class SchoolSelectionFragment : Fragment() {
 
     private fun updateDB(id: String) {
         val database = FirebaseDatabase.getInstance().reference
-        val ref = database.child("Schools").child(school).child("Students").
+        database.child("Schools").child(school).child("Students").
                 child(id).setValue(category)
     }
 
@@ -134,40 +132,39 @@ class SchoolSelectionFragment : Fragment() {
         select.isEnabled = true
     }
 
-    fun showOptions() {
+    private fun showOptions() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Choose an animal")
 
-        builder.setSingleChoiceItems(optionsList.toTypedArray(), 0 , DialogInterface.OnClickListener
-        { dialog, which ->
-                school = optionsList.get(which)
-                getTypeOptions()
-                type.isEnabled = true
-                dialog.dismiss()
-        })
+        builder.setSingleChoiceItems(optionsList.toTypedArray(), 0) { dialog, which ->
+            school = optionsList[which]
+            getTypeOptions()
+            type.isEnabled = true
+            dialog.dismiss()
+        }
         // create and show the alert dialog
         val dialog = builder.create()
         dialog.show()
     }
 
-    fun showTypes() {
+    private fun showTypes() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Choose an animal")
 
-        builder.setSingleChoiceItems(typesList.toTypedArray(), 0 , DialogInterface.OnClickListener
-        { dialog, which ->
-            category = typesList.get(which)
+        builder.setSingleChoiceItems(typesList.toTypedArray(), 0) { dialog, which ->
+            category = typesList[which]
             updateDB(FirebaseAuth.getInstance().uid!!)
             next()
             dialog.dismiss()
             onButtonPressed(2)
-        })
+        }
         // create and show the alert dialog
         val dialog = builder.create()
+        dialog.show()
      }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Int) {
+    private fun onButtonPressed(uri: Int) {
         listener?.onFragmentInteraction(uri)
     }
 
@@ -176,7 +173,7 @@ class SchoolSelectionFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
