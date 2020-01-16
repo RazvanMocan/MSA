@@ -98,7 +98,6 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE -> {
 
-                        dialog.show()
                         loginViewModel.login(
                             username.text.toString(),
                             password.text.toString()
@@ -110,7 +109,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                dialog.show()
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
@@ -217,7 +215,6 @@ class LoginActivity : AppCompatActivity() {
 
         activity.addOnSuccessListener { result ->
             Log.e("type ", result.claims["type"].toString())
-            dialog.dismiss()
             changeActivity(
                 MainMenuActivity::class.java,
                 welcome,
