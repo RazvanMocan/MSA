@@ -60,4 +60,10 @@
         android:name="com.mocan.autoreflex.ui.instructor.InstructorFragment"
         android:label="@string/instructor_list"
         tools:layout="@layout/fragment_instructor"/>
+
+    <fragment
+        android:id="@+id/law_fragment"
+        android:name="com.mocan.autoreflex.LawFragment"
+        android:label="@string/law_course"
+        tools:layout="@layout/fragment_law_course"/>
 </navigation>

@@ -41,6 +41,12 @@
             android:icon="@drawable/ic_menu_instructor"
             android:title="@string/instructor_list"
             android:visible="false"/>
+
+        <item
+            android:id="@+id/law_fragment"
+            android:icon="@drawable/ic_law"
+            android:title="@string/law_course"
+            android:visible="false"/>
     </group>
 
     <item android:id="@+id/cominicate"
