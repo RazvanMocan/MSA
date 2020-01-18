@@ -65,17 +65,14 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            dialog.dismiss()
             if (loginResult.error != null) {
+                dialog.dismiss()
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
 
                 setResult(Activity.RESULT_OK)
-
-                //Complete and destroy login activity once successful
-                finish()
             }
         })
 
@@ -197,7 +194,13 @@ class LoginActivity : AppCompatActivity() {
     private fun changeActivity(activity: Class<*>, welcome:String, displayName:String?, type: String?) {
         val myIntent = Intent(this, activity)
         myIntent.putExtra("type", type)
+        myIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        dialog.dismiss()
+
         startActivity(myIntent)
+
+        //Complete and destroy login activity once successful
+        finish()
 
         Toast.makeText(
             applicationContext,
@@ -215,6 +218,7 @@ class LoginActivity : AppCompatActivity() {
 
         activity.addOnSuccessListener { result ->
             Log.e("type ", result.claims["type"].toString())
+
             changeActivity(
                 MainMenuActivity::class.java,
                 welcome,
