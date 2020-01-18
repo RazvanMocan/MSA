@@ -2,13 +2,19 @@ package com.mocan.autoreflex.ui.learning
 
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.InputType
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.learning.CategoryFragment.OnListFragmentInteractionListener
