@@ -76,6 +76,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/toggle_button_group"
             android:gravity="end"
+            android:enabled="false"
             app:icon="@drawable/ic_arrow_24dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:layout_width="wrap_content"

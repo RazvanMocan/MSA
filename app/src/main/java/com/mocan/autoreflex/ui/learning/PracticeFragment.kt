@@ -43,6 +43,7 @@ class PracticeFragment : Fragment() {
         btnList.add(root.findViewById(R.id.B))
         btnList.add(root.findViewById(R.id.C))
 
+        val next = root.findViewById<Button>(R.id.next)
 
         root.findViewById<Button>(R.id.verifica).setOnClickListener { enable(false)
             for (i in 0 until btnList.size)
@@ -50,9 +51,11 @@ class PracticeFragment : Fragment() {
                     btnList[i].setBackgroundColor(Color.RED)
                 else
                     btnList[i].setBackgroundColor(Color.GREEN)
+            next.isEnabled = true
         }
 
-        root.findViewById<Button>(R.id.next).setOnClickListener { updateUI()
+        next.setOnClickListener { updateUI()
+            next.isEnabled = true
             enable(true)
             btnList.forEach { button: MaterialButton -> button.setBackgroundColor(Color.TRANSPARENT) }
         }
