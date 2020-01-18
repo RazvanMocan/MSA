@@ -1,4 +1,4 @@
-package com.mocan.autoreflex
+package com.mocan.autoreflex.ui.law
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.mocan.autoreflex.R
 
 /**
  * A simple [Fragment] subclass.

@@ -134,7 +134,7 @@ class SchoolSelectionFragment : Fragment() {
 
     private fun showOptions() {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Choose an animal")
+        builder.setTitle("Choose a school")
 
         builder.setSingleChoiceItems(optionsList.toTypedArray(), 0) { dialog, which ->
             school = optionsList[which]
@@ -149,7 +149,7 @@ class SchoolSelectionFragment : Fragment() {
 
     private fun showTypes() {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Choose an animal")
+        builder.setTitle("Choose a category")
 
         builder.setSingleChoiceItems(typesList.toTypedArray(), 0) { dialog, which ->
             category = typesList[which]

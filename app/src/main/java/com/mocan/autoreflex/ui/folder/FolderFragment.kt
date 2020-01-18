@@ -87,7 +87,7 @@ class FolderFragment : Fragment() {
 
         task.addOnSuccessListener { list ->
             for (document in list) {
-                val check = CheckBox(this.context)
+                val check = CheckBox(this.context!!)
                 check.text = document
                 check.isChecked = pref.getBoolean(document, false)
                 check.setOnClickListener { v ->

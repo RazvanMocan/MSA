@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -24,12 +23,15 @@ import com.mocan.autoreflex.UserMenuFactory
 import com.mocan.autoreflex.ui.car.CarFragment
 import com.mocan.autoreflex.ui.car.dummy.DummyContent
 import com.mocan.autoreflex.ui.folder.FolderViewModel
+import com.mocan.autoreflex.ui.learning.CategoryFragment
+import com.mocan.autoreflex.ui.learning.PracticeFragment
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
 
 
-class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteractionListener {
+class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteractionListener,
+                        CategoryFragment.OnListFragmentInteractionListener{
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loginViewModel: LoginViewModel
@@ -74,7 +76,7 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
             drawerLayout
         )
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.nav_gallery)
                 fab.hide()
             else
@@ -120,5 +122,23 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
     override fun onListFragmentInteraction(item: DummyContent.CarItem?) {
         Log.e("interact", "view pressed")
+//
+    }
+
+    override fun onListFragmentInteraction(item: String?, index: Int?) {
+        val newFragment = PracticeFragment()
+        val args = Bundle()
+        args.putString("category", item)
+        args.putInt("index", index ?: 0)
+        newFragment.arguments = args
+
+        val transaction = supportFragmentManager.beginTransaction().apply {
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            replace(R.id.nav_host_fragment, newFragment)
+            addToBackStack(null)
+        }
+
+        transaction.commit()
     }
 }

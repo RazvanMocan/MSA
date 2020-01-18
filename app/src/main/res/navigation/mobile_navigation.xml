@@ -63,7 +63,19 @@
 
     <fragment
         android:id="@+id/law_fragment"
-        android:name="com.mocan.autoreflex.LawFragment"
+        android:name="com.mocan.autoreflex.ui.law.LawFragment"
         android:label="@string/law_course"
         tools:layout="@layout/fragment_law_course"/>
+
+    <fragment
+        android:id="@+id/learning_fragment"
+        android:name="com.mocan.autoreflex.ui.learning.CategoryFragment"
+        android:label="@string/learning"
+        tools:layout="@layout/fragment_learning_list"/>
+
+    <fragment
+        android:id="@+id/practice_fragment"
+        android:name="com.mocan.autoreflex.ui.learning.PracticeFragment"
+        android:label="@string/learning"
+        tools:layout="@layout/practice_fragment"/>
 </navigation>
