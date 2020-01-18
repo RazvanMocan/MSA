@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -26,6 +25,7 @@ import com.mocan.autoreflex.ui.car.CarFragment
 import com.mocan.autoreflex.ui.car.dummy.DummyContent
 import com.mocan.autoreflex.ui.folder.FolderViewModel
 import com.mocan.autoreflex.ui.learning.CategoryFragment
+import com.mocan.autoreflex.ui.learning.PracticeFragment
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
@@ -139,6 +139,8 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
     override fun onListFragmentInteraction(item: String?, index: Int?) {
         val navController = findNavController(R.id.nav_host_fragment)
+        PracticeFragment.index = index ?: 0
+        PracticeFragment.category = item ?: ""
         navController.navigate(R.id.practice_fragment)
     }
 }

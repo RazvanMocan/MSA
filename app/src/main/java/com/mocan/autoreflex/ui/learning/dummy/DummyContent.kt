@@ -36,8 +36,7 @@ object DummyContent {
 
             override fun onDataChange(p0: DataSnapshot) {
                 for (child in p0.children) {
-                    val category = child.getValue(String::class.java)
-                    Log.e("categories", category)
+                    val category = child.key
 
                     ITEMS2.add(category!!)
                 }

@@ -75,7 +75,12 @@ class MyCategoryRecyclerViewAdapter(
         ) { _, _ ->
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item, index.text.toString().toInt())
+            val i: Int = if (index.text.toString().isEmpty())
+                pref.getInt(item,0)
+            else
+                index.text.toString().toInt()
+
+            mListener?.onListFragmentInteraction(item, i)
         }
 
         builder.setNegativeButton("Cancel"
