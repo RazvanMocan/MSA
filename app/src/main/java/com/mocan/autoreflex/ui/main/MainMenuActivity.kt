@@ -63,6 +63,7 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         val bundle: Bundle? = intent.extras
         val message: String? = bundle?.getString("type")
         if (message != "scoala") {
+            navController.popBackStack()
             navController.navigate(R.id.nav_tasks)
         }
         val factory = UserMenuFactory(message!!)
