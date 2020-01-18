@@ -129,7 +129,7 @@ class MyCategoryRecyclerViewAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: ProgressBar = mView.progress
         val mPercentView: TextView = mView.item_percentage
-        val mContentView: Button = mView.content
+        val mContentView: TextView = mView.content
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"
