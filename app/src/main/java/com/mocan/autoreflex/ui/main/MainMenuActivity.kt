@@ -1,11 +1,13 @@
 package com.mocan.autoreflex.ui.main
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -49,8 +51,17 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val i = Intent(Intent.ACTION_SEND)
+            i.type = "message/rfc822"
+            i.putExtra(Intent.EXTRA_EMAIL, arrayOf("office@autoreflex.ro"))
+            i.putExtra(Intent.EXTRA_SUBJECT, "Aplicatie scoala")
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."))
+            } catch (ex: ActivityNotFoundException) {
+                Snackbar.make(view, "\"There are no email clients installed.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)

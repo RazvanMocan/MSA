@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/img_view"
-            android:layout_below="@+id/intrebarea"/>
+            android:layout_below="@+id/intrebarea" />
 
 
         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -35,24 +35,25 @@
             android:layout_below="@+id/image"
             android:orientation="vertical"
 
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
                 style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="a"/>
 
             <com.google.android.material.button.MaterialButton
                 style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text='b'/>
 
             <com.google.android.material.button.MaterialButton
                 style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="c"/>
 
@@ -80,7 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="@string/urmatoarea_intrebare" />
+            android:text="@string/urmatoarea_intrebare"
+            android:layout_marginBottom="24dp"/>
 
 
     </RelativeLayout>
