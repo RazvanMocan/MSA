@@ -1,13 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.learning.PracticeFragment">
-
-    <TextView
+    <RelativeLayout
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_margin="16dp">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/nr_intrebare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/intrebarea" />
+
+        <TextView
+            android:id="@+id/intrebarea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nr_intrebare"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/img_view"
+            android:layout_below="@+id/intrebarea"/>
+
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggle_button_group"
+            android:layout_below="@+id/image"
+            android:orientation="vertical"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="a"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='b'/>
+
+            <com.google.android.material.button.MaterialButton
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="c"/>
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verifica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/toggle_button_group"
+            android:text="@string/verifiva_raspunsul"
+            android:textAlignment="center"
+            app:icon="@drawable/ic_check_black_24dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/toggle_button_group"
+            android:gravity="end"
+            app:icon="@drawable/ic_arrow_24dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/urmatoarea_intrebare" />
+
+
+    </RelativeLayout>
+</ScrollView>

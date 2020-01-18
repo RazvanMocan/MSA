@@ -37,11 +37,11 @@ class FolderFragment : Fragment() {
         val root = inflater.inflate(R.layout.folder_fragment, container, false)
         taskList = root.findViewById(R.id.documentsList)
         taskButton = root.findViewById(R.id.add_task)
-        
+
         taskButton.setOnClickListener { showDialog() }
 
         pref = this.context!!.getSharedPreferences("task", MODE_PRIVATE)
-        
+
         return root
     }
 
@@ -87,17 +87,20 @@ class FolderFragment : Fragment() {
 
         task.addOnSuccessListener { list ->
             for (document in list) {
-                val check = CheckBox(this.context!!)
-                check.text = document
-                check.isChecked = pref.getBoolean(document, false)
-                check.setOnClickListener { v ->
-                    val editor = pref.edit()
-                    v as CheckBox
-                    editor.putBoolean(v.text.toString(), v.isChecked)
-                    editor.apply()
-                }
+                if (this.context != null) {
+                    val check = CheckBox(this.context)
+                    check.text = document
+                    check.isChecked = pref.getBoolean(document, false)
+                    check.setOnClickListener { v ->
+                        val editor = pref.edit()
+                        v as CheckBox
+                        editor.putBoolean(v.text.toString(), v.isChecked)
+                        editor.apply()
+                    }
 
-                taskList.addView(check, checkParams)
+                    taskList.addView(check, checkParams)
+
+                }
             }
         }
 
