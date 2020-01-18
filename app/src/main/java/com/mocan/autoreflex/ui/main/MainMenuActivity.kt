@@ -24,7 +24,6 @@ import com.mocan.autoreflex.ui.car.CarFragment
 import com.mocan.autoreflex.ui.car.dummy.DummyContent
 import com.mocan.autoreflex.ui.folder.FolderViewModel
 import com.mocan.autoreflex.ui.learning.CategoryFragment
-import com.mocan.autoreflex.ui.learning.PracticeFragment
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
@@ -56,6 +55,7 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
@@ -126,19 +126,7 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
     }
 
     override fun onListFragmentInteraction(item: String?, index: Int?) {
-        val newFragment = PracticeFragment()
-        val args = Bundle()
-        args.putString("category", item)
-        args.putInt("index", index ?: 0)
-        newFragment.arguments = args
-
-        val transaction = supportFragmentManager.beginTransaction().apply {
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack so the user can navigate back
-            replace(R.id.nav_host_fragment, newFragment)
-            addToBackStack(null)
-        }
-
-        transaction.commit()
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(R.id.practice_fragment)
     }
 }
