@@ -1,5 +1,7 @@
 package com.mocan.autoreflex.ui.learning
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
@@ -27,6 +30,8 @@ class PracticeFragment : Fragment() {
     private lateinit var question: TextView
     private lateinit var image: ImageView
     private val btnList = ArrayList<MaterialButton>()
+    private lateinit var  pref:SharedPreferences
+
 
     private lateinit var current: List<Map.Entry<String, Boolean>>
 
@@ -35,6 +40,8 @@ class PracticeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.practice_fragment, container, false)
+        pref = this.context!!.getSharedPreferences("categories", MODE_PRIVATE)
+
 
         nrQuestion = root.findViewById(R.id.nr_intrebare)
         question = root.findViewById(R.id.intrebarea)
@@ -52,6 +59,9 @@ class PracticeFragment : Fragment() {
                 else
                     btnList[i].setBackgroundColor(Color.GREEN)
             next.isEnabled = true
+            val editor = pref.edit()
+            editor.putInt(category, viewModel.index)
+            editor.apply()
         }
 
         next.setOnClickListener { updateUI()

@@ -195,6 +195,8 @@ class LoginActivity : AppCompatActivity() {
         val myIntent = Intent(this, activity)
         myIntent.putExtra("type", type)
         myIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        dialog.dismiss()
+
 
         startActivity(myIntent)
 

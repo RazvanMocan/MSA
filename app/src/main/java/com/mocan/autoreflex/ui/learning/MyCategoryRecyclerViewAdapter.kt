@@ -88,7 +88,7 @@ class MyCategoryRecyclerViewAdapter(
             val i: Int = if (index.text.toString().isEmpty())
                 pref.getInt(item,0)
             else
-                index.text.toString().toInt()
+                index.text.toString().toInt() - 1
 
             mListener?.onListFragmentInteraction(item, i)
         }
@@ -115,14 +115,17 @@ class MyCategoryRecyclerViewAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.max = mValues.size
+        holder.mIdView.max = mValues.size - 1
         val prog = pref.getInt(item, 0)
         holder.mIdView.progress = prog
         holder.mIdView.secondaryProgress = mValues.size
 
 
+        Log.e("percentage", prog.toString())
+        Log.e("percentage2", DummyContent.getCount(position).toString())
+        Log.e("percentage3",  mValues.size.toString())
 
-        holder.mPercentView.text = "${prog.toFloat().div(DummyContent.getCount(position)).toInt()}%"
+        holder.mPercentView.text = "${prog.toFloat().div(DummyContent.getCount(position)).times(100).toInt()}%"
 
         holder.mContentView.text = item
 
