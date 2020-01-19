@@ -70,6 +70,7 @@ class PracticeFragment : Fragment() {
             btnList.forEach { button: MaterialButton -> button.setBackgroundColor(Color.TRANSPARENT) }
         }
 
+
         return root
     }
 
@@ -93,6 +94,8 @@ class PracticeFragment : Fragment() {
             nrQuestion.text = getString(R.string.intrebarea, viewModel.index, viewModel.fullSize)
             this.question.text = question.question
             current = question.answers.entries.shuffled()
+            image.setImageBitmap(question.photo)
+
 
             for (i in 0 until btnList.size)
                 btnList[i].text = current[i].key

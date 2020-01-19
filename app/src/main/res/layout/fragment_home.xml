@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
     <LinearLayout
         android:id="@+id/late_docs"
@@ -24,4 +27,6 @@
             android:text="@string/car_list"/>
 
     </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </ScrollView>
