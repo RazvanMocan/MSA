@@ -16,8 +16,13 @@ class IndexFilter(private val min: Int,private val max: Int): InputFilter {
         dend: Int
     ): CharSequence? {
 
-        if (dest.isNullOrEmpty())
-            return source
+        if (dest.isNullOrEmpty()) {
+            val input = Integer.parseInt(source.toString())
+
+            if (isInRange(input))
+                return source
+            return ""
+        }
         try {
             val input = Integer.parseInt(dest.toString().replaceRange(dstart, dend, source.toString().substring(start, end)))
 
