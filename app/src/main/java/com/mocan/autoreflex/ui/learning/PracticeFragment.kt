@@ -14,8 +14,10 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 
 import com.mocan.autoreflex.R
+import kotlinx.android.synthetic.main.practice_fragment.view.*
 
 
 class PracticeFragment : Fragment() {
@@ -31,6 +33,7 @@ class PracticeFragment : Fragment() {
     private lateinit var image: ImageView
     private val btnList = ArrayList<MaterialButton>()
     private lateinit var  pref:SharedPreferences
+    private lateinit var  group: MaterialButtonToggleGroup
 
 
     private lateinit var current: List<Map.Entry<String, Boolean>>
@@ -49,15 +52,16 @@ class PracticeFragment : Fragment() {
         btnList.add(root.findViewById(R.id.A))
         btnList.add(root.findViewById(R.id.B))
         btnList.add(root.findViewById(R.id.C))
+        group = root.findViewById(R.id.toggle_button_group)
 
         val next = root.findViewById<Button>(R.id.next)
 
         root.findViewById<Button>(R.id.verifica).setOnClickListener { enable(false)
             for (i in 0 until btnList.size)
                 if (current[i].value)
-                    btnList[i].setBackgroundColor(Color.RED)
-                else
                     btnList[i].setBackgroundColor(Color.GREEN)
+                else
+                    btnList[i].setBackgroundColor(Color.RED)
             next.isEnabled = true
             val editor = pref.edit()
             editor.putInt(category, viewModel.index)
@@ -68,6 +72,7 @@ class PracticeFragment : Fragment() {
             next.isEnabled = true
             enable(true)
             btnList.forEach { button: MaterialButton -> button.setBackgroundColor(Color.TRANSPARENT) }
+            group.clearChecked()
         }
 
 

@@ -34,7 +34,6 @@
             android:id="@+id/toggle_button_group"
             android:layout_below="@+id/image"
             android:orientation="vertical"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -42,19 +41,22 @@
                 android:id="@+id/A"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:strokeWidth="2dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/B"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:strokeWidth="2dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/C"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:strokeWidth="2dp"/>
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 

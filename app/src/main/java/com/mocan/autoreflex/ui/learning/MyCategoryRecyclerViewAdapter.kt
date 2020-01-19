@@ -70,7 +70,7 @@ class MyCategoryRecyclerViewAdapter(
 
         val index = EditText(context)
         index.inputType = InputType.TYPE_CLASS_NUMBER
-        index.filters = Array(1) { IndexFilter(1, 100)}
+        index.filters = Array(1) { IndexFilter(1, DummyContent.getCount(count).toInt())}
         index.hint = context.getString(R.string.jump_ahead, DummyContent.getCount(count))
         index.textSize = 20f
         index.layoutParams = llParam
@@ -85,10 +85,12 @@ class MyCategoryRecyclerViewAdapter(
         ) { _, _ ->
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            val i: Int = if (index.text.toString().isEmpty())
+            var i: Int = if (index.text.toString().isEmpty())
                 pref.getInt(item,0)
             else
                 index.text.toString().toInt() - 1
+            if (i == DummyContent.getCount(count).toInt())
+                i = 0
 
             mListener?.onListFragmentInteraction(item, i)
         }
