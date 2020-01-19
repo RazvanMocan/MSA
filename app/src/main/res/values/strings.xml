@@ -60,7 +60,7 @@
     <string name="add_car">Add Car</string>
     <string name="law_course">Curs legislatie</string>
     <string name="learning">Mediu de invatare</string>
-    <string name="jump_ahead">Sari la… (1 si %d)</string>
+    <string name="jump_ahead">Sari la… (1 si %1$d)</string>
     <string name="press_start">Apasati start pentru a continua de unde ati ramas sau</string>
     <string name="intrebarea">Intrebarea %1$d din %2$d</string>
     <string name="img_view">Imaginea de care se vorbeste in intrebare</string>

@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.learning.CategoryFragment.OnListFragmentInteractionListener
+import com.mocan.autoreflex.ui.learning.dummy.DummyContent
 import kotlinx.android.synthetic.main.fragment_learning.view.*
 
 
@@ -33,13 +34,16 @@ class MyCategoryRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as String
-            Log.e(item, item)
-            clickCategory(item)
+            val item = v.tag as Map<String, Int>
+
+            for (entry in item) {
+                clickCategory(entry.key, entry.value)
+
+            }
         }
     }
 
-    private fun clickCategory(item: String) {
+    private fun clickCategory(item: String, count: Int) {
         val llPadding = 30
         val ll = LinearLayout(context)
         ll.orientation = LinearLayout.VERTICAL
@@ -67,7 +71,7 @@ class MyCategoryRecyclerViewAdapter(
         val index = EditText(context)
         index.inputType = InputType.TYPE_CLASS_NUMBER
         index.filters = Array(1) { IndexFilter(1, 100)}
-        index.hint = context.getString(R.string.jump_ahead).format(mValues.size)
+        index.hint = context.getString(R.string.jump_ahead, DummyContent.getCount(count))
         index.textSize = 20f
         index.layoutParams = llParam
         ll.addView(view)
@@ -118,14 +122,16 @@ class MyCategoryRecyclerViewAdapter(
 
 
 
-        holder.mPercentView.text = "${prog.toFloat().div(mValues.size).toInt()}%"
+        holder.mPercentView.text = "${prog.toFloat().div(DummyContent.getCount(position)).toInt()}%"
 
         holder.mContentView.text = item
 
         Log.e("categories", item)
 
         with(holder.mView) {
-            tag = item
+            val tmp = HashMap<String, Int>()
+            tmp[item] = position
+            tag = tmp
             setOnClickListener(mOnClickListener)
         }
     }

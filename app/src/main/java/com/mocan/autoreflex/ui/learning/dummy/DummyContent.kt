@@ -24,7 +24,12 @@ object DummyContent {
      * An array of sample (dummy) items.
      */
     val ITEMS = MutableLiveData<List<String>>()
-    val ITEMS2: MutableList<String> = ArrayList()
+    private val ITEMS2: MutableList<String> = ArrayList()
+    private val COUNT: MutableList<Long> = ArrayList()
+
+    fun getCount(int: Int): Long {
+        return COUNT[int]
+    }
 
     init {
         val database = FirebaseDatabase.getInstance().reference
@@ -38,6 +43,7 @@ object DummyContent {
                 for (child in p0.children) {
                     val category = child.key
 
+                    COUNT.add(child.childrenCount)
                     ITEMS2.add(category!!)
                 }
                 ITEMS.value = ITEMS2
