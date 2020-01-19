@@ -10,14 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.card.MaterialCardView
 
 import com.mocan.autoreflex.R
-import kotlinx.android.synthetic.main.practice_fragment.view.*
 
 
 class PracticeFragment : Fragment() {
@@ -32,8 +31,9 @@ class PracticeFragment : Fragment() {
     private lateinit var question: TextView
     private lateinit var image: ImageView
     private val btnList = ArrayList<MaterialButton>()
-    private lateinit var  pref:SharedPreferences
-    private lateinit var  group: MaterialButtonToggleGroup
+    private lateinit var pref:SharedPreferences
+    private lateinit var group: MaterialButtonToggleGroup
+    private lateinit var end: MaterialCardView
 
 
     private lateinit var current: List<Map.Entry<String, Boolean>>
@@ -53,6 +53,7 @@ class PracticeFragment : Fragment() {
         btnList.add(root.findViewById(R.id.B))
         btnList.add(root.findViewById(R.id.C))
         group = root.findViewById(R.id.toggle_button_group)
+        end = root.findViewById(R.id.end)
 
         val next = root.findViewById<Button>(R.id.next)
 
@@ -82,6 +83,7 @@ class PracticeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(PracticeViewModel::class.java)
+        viewModel.index = index
         viewModel.gatherData(category, index)
         viewModel.finished.task.addOnCompleteListener { task ->
             if (task.isSuccessful && task.result == true)
@@ -93,8 +95,10 @@ class PracticeFragment : Fragment() {
 
     private fun updateUI() {
         val question = viewModel.getQuestion()
-        if (question == null)
+        if (question == null) {
             enable(false)
+            end.visibility = View.VISIBLE
+        }
         else {
             nrQuestion.text = getString(R.string.intrebarea, viewModel.index, viewModel.fullSize)
             this.question.text = question.question
