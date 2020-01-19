@@ -66,4 +66,7 @@
     <string name="img_view">Imaginea de care se vorbeste in intrebare</string>
     <string name="verifiva_raspunsul">Verifiva</string>
     <string name="urmatoarea_intrebare">Urmatoarea</string>
+    <string name="user_profile">Profile</string>
+    <string name="username">Username</string>
+    <string name="update">Update</string>
 </resources>

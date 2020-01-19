@@ -78,4 +78,10 @@
         android:name="com.mocan.autoreflex.ui.learning.PracticeFragment"
         android:label="@string/learning"
         tools:layout="@layout/practice_fragment"/>
+
+    <fragment
+        android:id="@+id/user_profile"
+        android:name="com.mocan.autoreflex.ui.settings.UserProfile"
+        android:label="@string/user_profile"
+        tools:layout="@layout/fragment_user_profile"/>
 </navigation>

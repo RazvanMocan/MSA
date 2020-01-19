@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -29,6 +32,7 @@ import com.mocan.autoreflex.ui.learning.PracticeFragment
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
+import kotlinx.android.synthetic.main.activity_main_menu.*
 
 
 class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteractionListener,
@@ -64,6 +68,22 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val toggle = object : ActionBarDrawerToggle(this,
+            drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            override fun onDrawerOpened(drawerView: View) {
+                super.onDrawerOpened(drawerView)
+                val user = loginViewModel.alreadyLogged()
+
+
+            findViewById<TextView>(R.id.textView).text = user!!.email
+            findViewById<TextView>(R.id.displayName).text = user.displayName
+            if (user.photoUrl != null)
+                findViewById<ImageView>(R.id.imageView).setImageURI(user.photoUrl)
+            }
+        }
+
+        drawerLayout.addDrawerListener(toggle)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
@@ -103,20 +123,21 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main_menu, menu)
 
-        val user = loginViewModel.alreadyLogged()
-
-        findViewById<TextView>(R.id.textView).text = user?.email ?: ""
-        findViewById<TextView>(R.id.displayName).text = user?.displayName ?: ""
-
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.sign_out)
             logout()
+        else if (item.itemId == R.id.action_settings) {
+            val navController = findNavController(R.id.nav_host_fragment)
+            navController.navigate(R.id.user_profile)
+        }
 
         return super.onOptionsItemSelected(item)
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
