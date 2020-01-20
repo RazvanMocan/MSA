@@ -2,7 +2,9 @@ package com.mocan.autoreflex.ui.settings
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +21,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
+import java.io.File
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,11 +57,11 @@ class UserProfile : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         Log.e("Next", "aici")
 
-        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK ) {
             resultData?.data?.also { uri ->
-                Log.e("Te rog", "mergi")
                 imgView.setImageURI(uri)
                 photo = uri
+                onButtonPressed(uri)
             }
         }
     }
@@ -75,9 +78,6 @@ class UserProfile : Fragment() {
 
         imgView = root.findViewById(R.id.profile_pic)
 
-        if (user!!.photoUrl != null)
-            imgView.setImageURI(user.photoUrl)
-
         imgView.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -87,7 +87,7 @@ class UserProfile : Fragment() {
         }
 
         val username = root.findViewById<TextView>(R.id.editname)
-        username.text = user.displayName
+        username.text = user!!.displayName
 
         root.findViewById<Button>(R.id.update).setOnClickListener {
             val profileUpdates = UserProfileChangeRequest.Builder()

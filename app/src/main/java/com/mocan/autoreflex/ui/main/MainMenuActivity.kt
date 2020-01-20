@@ -1,15 +1,18 @@
 package com.mocan.autoreflex.ui.main
 
 import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,6 +25,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseUser
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.UserMenuFactory
 import com.mocan.autoreflex.ui.car.CarFragment
@@ -32,15 +36,18 @@ import com.mocan.autoreflex.ui.learning.PracticeFragment
 import com.mocan.autoreflex.ui.login.LoginActivity
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
-import kotlinx.android.synthetic.main.activity_main_menu.*
+import com.mocan.autoreflex.ui.settings.UserProfile
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
 
 
 class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteractionListener,
-                        CategoryFragment.OnListFragmentInteractionListener{
+    CategoryFragment.OnListFragmentInteractionListener, UserProfile.OnFragmentInteractionListener{
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loginViewModel: LoginViewModel
-
+    private lateinit var user: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +55,9 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
+        user = loginViewModel.alreadyLogged()!!
 
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -68,22 +75,7 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
 
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val toggle = object : ActionBarDrawerToggle(this,
-            drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
-            override fun onDrawerOpened(drawerView: View) {
-                super.onDrawerOpened(drawerView)
-                val user = loginViewModel.alreadyLogged()
-
-
-            findViewById<TextView>(R.id.textView).text = user!!.email
-            findViewById<TextView>(R.id.displayName).text = user.displayName
-            if (user.photoUrl != null)
-                findViewById<ImageView>(R.id.imageView).setImageURI(user.photoUrl)
-            }
-        }
-
-        drawerLayout.addDrawerListener(toggle)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
@@ -122,6 +114,19 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main_menu, menu)
+
+
+        findViewById<TextView>(R.id.textView).text = user.email
+        findViewById<TextView>(R.id.displayName).text = user.displayName
+
+        val directory = ContextWrapper(applicationContext).getDir("imageDir", Context.MODE_PRIVATE)
+        val imgFile = File(directory, "profile.jpg")
+
+        if (imgFile.exists()) {
+            val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+            findViewById<ImageView>(R.id.imageView).setImageBitmap(myBitmap)
+
+        }
 
         return true
     }
@@ -163,5 +168,43 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         PracticeFragment.index = index ?: 0
         PracticeFragment.category = item ?: ""
         navController.navigate(R.id.practice_fragment)
+    }
+
+    override fun onFragmentInteraction(uri: Uri) {
+
+
+        findViewById<TextView>(R.id.textView).text = user.email
+        findViewById<TextView>(R.id.displayName).text = user.displayName
+
+
+        val draw = Drawable.createFromStream(contentResolver.openInputStream(uri), "profile.bmp")
+
+        val inputStream = contentResolver.openInputStream(uri)
+        val directory = ContextWrapper(applicationContext).getDir("imageDir", Context.MODE_PRIVATE)
+        val mypath = File(directory,"profile.jpg")
+
+        if (!mypath.exists())
+            mypath.createNewFile()
+
+        val inStream = BufferedInputStream(inputStream!!, 1024 * 5)
+
+
+        val outStream = FileOutputStream(mypath)
+        val buff = ByteArray(5 * 1024)
+
+        var len: Int
+        while(inStream.read(buff).also { len = it } >= 0){
+            outStream.write(buff, 0, len)
+        }
+
+        outStream.flush()
+        outStream.close()
+        inStream.close()
+
+
+        Log.e("path", mypath.path)
+        Log.e("path", mypath.exists().toString())
+
+        findViewById<ImageView>(R.id.imageView).setImageDrawable(draw)
     }
 }
