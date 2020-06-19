@@ -70,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
+//                dialog.dismiss()
                 updateUiWithUser(loginResult.success)
 
                 setResult(Activity.RESULT_OK)
@@ -106,6 +107,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
+                dialog.show()
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
@@ -195,7 +197,7 @@ class LoginActivity : AppCompatActivity() {
         val myIntent = Intent(this, activity)
         myIntent.putExtra("type", type)
         myIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        dialog.dismiss()
+//        dialog.dismiss()
 
 
         startActivity(myIntent)
@@ -211,7 +213,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUiWithUser(model: FirebaseUser) {
-        dialog.show()
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
 
@@ -219,6 +220,7 @@ class LoginActivity : AppCompatActivity() {
 
         activity.addOnSuccessListener { result ->
             Log.e("type ", result.claims["type"].toString())
+            dialog.dismiss()
 
             changeActivity(
                 MainMenuActivity::class.java,
