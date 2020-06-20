@@ -26,19 +26,15 @@ class PracticeViewModel : ViewModel() {
             override fun onDataChange(p0: DataSnapshot) {
                 fullSize = p0.childrenCount
 
-                Log.e("lista", fullSize.toString())
-
                 for (child in p0.children) {
                     val question = child.getValue(TheoryQuestion::class.java)
                     list.add(question!!)
                 }
-                Log.e("index", index.toString())
 
                 for (i in 1..index)
                     if (list.isNotEmpty())
                         list.removeAt(0)
 
-                Log.e("lista", list.size.toString())
                 getImage(true, 2)
             }
         })
@@ -57,8 +53,6 @@ class PracticeViewModel : ViewModel() {
         for (question in list) {
             val task = DownloadFilesTask()
             if (question.picture.isNotEmpty() && question.photo == null) {
-                Log.e("url", URL(question.picture).toString())
-                Log.e("url2", question.picture)
                 question.photo = task.execute(URL(question.picture)).get(1, TimeUnit.SECONDS)[0]
             }
 

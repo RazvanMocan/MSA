@@ -111,7 +111,6 @@ class UserCreationFragment : Fragment() {
             task.addOnCompleteListener { task1 ->
                 loading.visibility = View.INVISIBLE
                 if (task1.isSuccessful) {
-                    Log.e("Merge cumva", "Merge, oare?")
                     onButtonPressed(1)
                 }
                 Toast.makeText(root.context, "User: " + loginViewModel.alreadyLogged().toString(),

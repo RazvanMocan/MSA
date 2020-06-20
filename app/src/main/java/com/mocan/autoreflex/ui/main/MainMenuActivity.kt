@@ -92,7 +92,6 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         val factory = UserMenuFactory(message!!)
         val navGraph = factory.selectView(navView)
 
-        Log.e("container", "message was null")
         ViewModelProviders.of(this).get(FolderViewModel::class.java).setAdmin(message)
 
         appBarConfiguration = AppBarConfiguration(
@@ -200,10 +199,6 @@ class MainMenuActivity : AppCompatActivity(), CarFragment.OnListFragmentInteract
         outStream.flush()
         outStream.close()
         inStream.close()
-
-
-        Log.e("path", mypath.path)
-        Log.e("path", mypath.exists().toString())
 
         findViewById<ImageView>(R.id.imageView).setImageDrawable(draw)
     }

@@ -108,7 +108,6 @@ class IDFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        Log.e("Next", "aici")
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
@@ -119,11 +118,9 @@ class IDFragment : Fragment() {
             // provided to this method as a parameter.
             // Pull that URI using resultData.getData().
             resultData?.data?.also { uri ->
-                Log.e("Te rog", "mergi")
                 uploadFile(uri)
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Log.e("Te rog", "mergi 4")
             val imageBitmap = resultData?.extras?.get("data") as Bitmap
             val baos = ByteArrayOutputStream()
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -135,10 +132,8 @@ class IDFragment : Fragment() {
 
     private fun uploadFileMemory(data: ByteArray) {
         val user = FirebaseAuth.getInstance().currentUser
-        Log.e("Te rog", user.toString())
 
         if (user != null) {
-            Log.e("Te rog", "mergi 3")
 
             val userID = user.uid
             val storageReference = mStorageRef.child("new_users/$userID.jpg")
@@ -155,13 +150,11 @@ class IDFragment : Fragment() {
     private fun uploadFile(uri: Uri) {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            Log.e("Te rog", "mergi 3")
 
             FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Get new Instance ID token
-                        Log.e("instance ID", task.result!!.token)
                         val userID = task.result?.token + " MYUID " + user.uid
                         val storageReference = mStorageRef.child("new_users/$userID.jpg")
                         storageReference.putFile(uri).addOnCompleteListener { task2 ->

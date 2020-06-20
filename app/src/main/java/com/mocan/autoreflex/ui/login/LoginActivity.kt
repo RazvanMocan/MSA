@@ -219,7 +219,6 @@ class LoginActivity : AppCompatActivity() {
         val activity = loginViewModel.getActivity()
 
         activity.addOnSuccessListener { result ->
-            Log.e("type ", result.claims["type"].toString())
             dialog.dismiss()
 
             changeActivity(

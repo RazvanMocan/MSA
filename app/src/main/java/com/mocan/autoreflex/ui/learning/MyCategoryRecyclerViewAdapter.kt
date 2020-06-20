@@ -122,16 +122,9 @@ class MyCategoryRecyclerViewAdapter(
         holder.mIdView.progress = prog
         holder.mIdView.secondaryProgress = mValues.size
 
-
-        Log.e("percentage", prog.toString())
-        Log.e("percentage2", DummyContent.getCount(position).toString())
-        Log.e("percentage3",  mValues.size.toString())
-
         holder.mPercentView.text = "${prog.toFloat().div(DummyContent.getCount(position)).times(100).toInt()}%"
 
         holder.mContentView.text = item
-
-        Log.e("categories", item)
 
         with(holder.mView) {
             val tmp = HashMap<String, Int>()

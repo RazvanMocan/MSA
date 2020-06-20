@@ -72,9 +72,6 @@ class MyinstructorRecyclerViewAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.e("nu tare", holder.mExpandableView.toString())
-        Log.e("nu tare", mValues.toString())
-
         val item = mValues.getValue(keyList[position])
         holder.mIdView.text = position.inc().toString()
         holder.mContentView.text = keyList[position]

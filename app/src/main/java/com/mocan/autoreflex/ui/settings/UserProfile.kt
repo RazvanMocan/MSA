@@ -55,8 +55,6 @@ class UserProfile : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        Log.e("Next", "aici")
-
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK ) {
             resultData?.data?.also { uri ->
                 imgView.setImageURI(uri)
