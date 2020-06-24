@@ -1,6 +1,5 @@
 package com.mocan.autoreflex.ui.signup
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
@@ -8,23 +7,33 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.mocan.autoreflex.R
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.nio.ByteBuffer
+import java.security.SecureRandom
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,6 +58,7 @@ class IDFragment : Fragment() {
     private val REQUEST_IMAGE_CAPTURE: Int = 1
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var mStorageRef: StorageReference
+    private lateinit var functions: FirebaseFunctions
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +75,8 @@ class IDFragment : Fragment() {
 
 
         checkFilePermissions()
+        functions = FirebaseFunctions.getInstance()
+
     }
 
     override fun onCreateView(
@@ -84,11 +96,11 @@ class IDFragment : Fragment() {
         return root
     }
 
-    fun performFileSearch() {
+    private fun performFileSearch() {
 
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
         // browser.
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             // Filter to only show results that can be "opened", such as a
             // file (as opposed to a list of contacts or timezones)
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -102,7 +114,7 @@ class IDFragment : Fragment() {
         startActivityForResult(intent, READ_REQUEST_CODE)
     }
 
-    fun perforTakePhoto() {
+    private fun perforTakePhoto() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE)
     }
@@ -112,14 +124,16 @@ class IDFragment : Fragment() {
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
 
-        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
             // The document selected by the user won't be returned in the intent.
             // Instead, a URI to that document will be contained in the return intent
             // provided to this method as a parameter.
             // Pull that URI using resultData.getData().
-            resultData?.data?.also { uri ->
-                uploadFile(uri)
+            this.requireContext().contentResolver.openInputStream(resultData?.data!!).use {
+                stream: InputStream? -> uploadFile(stream!!.readBytes())
             }
+//            uploadFile(resultData?.dataString!!.toByteArray())
+
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = resultData?.extras?.get("data") as Bitmap
             val baos = ByteArrayOutputStream()
@@ -134,20 +148,85 @@ class IDFragment : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
-
-            val userID = user.uid
-            val storageReference = mStorageRef.child("new_users/$userID.jpg")
-            storageReference.putBytes(data).addOnCompleteListener{task ->
-                if (task.isSuccessful) {
-                    Log.e("file uploaded", "Success!")
-                }
-            }
-
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Get new Instance ID token
+                        val userID = task.result?.token + " MYUID " + user.uid
+                        val storageReference = mStorageRef.child("new_users/$userID.jpg")
+                        storageReference.putBytes(encrypt(data)).addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
+                                Log.e("file uploaded", "Success!")
+                            }
+                        }
+                    }
+                })
         }
+    }
+
+    private fun generateSecretKey(): SecretKey? {
+        val secureRandom = SecureRandom()
+        val keyGenerator = KeyGenerator.getInstance("AES")
+        //generate a key with secure random
+        keyGenerator?.init(128, secureRandom)
+        return keyGenerator?.generateKey()
+    }
+
+    private fun saveSecretKey(secretKey: SecretKey) {
+        val secretPlain = Base64.encodeToString(secretKey.encoded, Base64.NO_WRAP)
+        Log.i("key", secretPlain)
+        Log.i("key", secretPlain.length.toString())
+        Log.i("org_key", secretKey.toString())
+        Log.i("org_key", secretKey.encoded.toString())
+        Log.i("org_key", secretKey.encoded.size.toString())
+
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val data = hashMapOf(
+            "password" to secretPlain,
+            "uid" to uid
+        )
+
+        Log.e("uid", uid)
+
+        functions
+            .getHttpsCallable("encrypt")
+            .call(data)
+            .addOnFailureListener {
+            Log.wtf("FF", it)
+        }
+            .addOnSuccessListener {
+                Log.i("working", "yeah")
+            }
 
     }
 
-    private fun uploadFile(uri: Uri) {
+    private fun encrypt(yourKey: SecretKey, fileData: ByteArray): ByteArray {
+        val data = yourKey.encoded
+        Log.e("size", data.size.toString())
+        val skeySpec = SecretKeySpec(data, "AES")
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+
+        val iv = ByteArray(12)
+        SecureRandom().nextBytes(iv)
+
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec, GCMParameterSpec(128, iv))
+        val cipherText = cipher.doFinal(fileData)
+
+        val byteBuffer: ByteBuffer = ByteBuffer.allocate(iv.size + cipherText.size)
+        byteBuffer.put(iv)
+        byteBuffer.put(cipherText)
+        return byteBuffer.array()
+    }
+
+
+    private fun encrypt(data: ByteArray): ByteArray {
+        val secretKey = generateSecretKey()
+        saveSecretKey(secretKey!!)
+        return encrypt(secretKey, data)
+    }
+
+    private fun uploadFile(uri: ByteArray) {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
 
@@ -157,7 +236,7 @@ class IDFragment : Fragment() {
                         // Get new Instance ID token
                         val userID = task.result?.token + " MYUID " + user.uid
                         val storageReference = mStorageRef.child("new_users/$userID.jpg")
-                        storageReference.putFile(uri).addOnCompleteListener { task2 ->
+                        storageReference.putBytes(encrypt(uri)).addOnCompleteListener { task2 ->
                             if (task2.isSuccessful) {
                                 Log.e("file uploaded", "Success!")
                             }
@@ -169,8 +248,8 @@ class IDFragment : Fragment() {
     }
 
     private fun checkFilePermissions() {
-        var permissionCheck = checkSelfPermission(context!!, "Manifest.permission.READ_EXTERNAL_STORAGE")
-        permissionCheck += checkSelfPermission(context!!, "Manifest.permission.WRITE_EXTERNAL_STORAGE")
+        var permissionCheck = checkSelfPermission(requireContext(), "Manifest.permission.READ_EXTERNAL_STORAGE")
+        permissionCheck += checkSelfPermission(requireContext(), "Manifest.permission.WRITE_EXTERNAL_STORAGE")
         if (permissionCheck != 0) {
             this.requestPermissions(
                 arrayOf(
