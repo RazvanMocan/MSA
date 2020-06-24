@@ -3,13 +3,15 @@ package com.mocan.autoreflex.ui.signup
 import android.net.Uri
 import android.os.Bundle
 
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.mocan.autoreflex.R
 import com.mocan.autoreflex.ui.login.LoginViewModel
 import com.mocan.autoreflex.ui.login.LoginViewModelFactory
+
 
 class SignUpActivity : AppCompatActivity(),
                        UserCreationFragment.OnFragmentInteractionListener,
@@ -28,6 +30,11 @@ class SignUpActivity : AppCompatActivity(),
 
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
+
+        val tabStrip = tabs.getChildAt(0) as LinearLayout
+        for (i in 0 until tabStrip.childCount) {
+            tabStrip.getChildAt(i).setOnTouchListener { v, _ -> true }
+        }
 
         loginViewModel = ViewModelProviders.of(this,
             LoginViewModelFactory()
